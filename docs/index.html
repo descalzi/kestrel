@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kestrel - See the Future</title>
+  <!-- Tailwind CSS CDN for styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    /* Custom styles for smooth scrolling and modal animation */
+    html {
+      scroll-behavior: smooth;
+    }
+    .modal-overlay {
+      transition: opacity 0.3s ease-in-out;
+    }
+    .modal-content {
+      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#F7F9FA] font-sans text-gray-800">
+
+  <!-- Header with Navigation -->
+  <header class="absolute top-0 left-0 right-0 z-10 p-6 sm:p-8">
+    <nav class="flex items-center justify-between">
+      <div class="flex items-center">
+        <!-- Logo from the attached image, now as a public URL -->
+        <img 
+          src="https://storage.googleapis.com/gcn-file-assets/kestrel-birdie-radar-f7f9fa.jpg" 
+          alt="Kestrel Birdie Radar Logo" 
+          class="w-12 h-12 rounded-full shadow-lg"
+        />
+        <span class="ml-3 text-2xl font-bold text-gray-900">Kestrel</span>
+      </div>
+      <div class="hidden sm:flex space-x-6 text-sm font-medium">
+        <a href="#features" class="text-gray-600 hover:text-indigo-500 transition-colors duration-300">Features</a>
+        <a href="#pricing" class="text-gray-600 hover:text-indigo-500 transition-colors duration-300">Pricing</a>
+        <a href="#contact" class="text-gray-600 hover:text-indigo-500 transition-colors duration-300">Contact</a>
+      </div>
+      <button id="get-started-btn" class="px-4 py-2 text-sm font-medium text-white bg-indigo-500 rounded-lg shadow-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-transform duration-300 transform hover:scale-105">
+        Get Started
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main Hero Section -->
+  <section class="relative flex flex-col md:flex-row items-center justify-center min-h-screen px-4 py-20 text-center md:text-left md:gap-16">
+    <!-- Image -->
+    <div class="mt-12 md:mt-0 max-w-xs md:max-w-md mx-auto">
+      <img 
+        src="https://storage.googleapis.com/gcn-file-assets/kestrel-birdie-radar-f7f9fa.jpg" 
+        alt="Full illustration of a Kestrel birdie with a radar" 
+        class="w-full h-auto transition-transform duration-500 transform hover:scale-105"
+      />
+    </div>
+    <!-- Text Content -->
+    <div class="max-w-xl">
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-6 leading-tight">
+        See the future, <br /> build with confidence.
+      </h1>
+      <p class="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto md:mx-0">
+        Kestrel provides predictive analytics with unparalleled accuracy, helping you make smarter decisions, faster.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 md:justify-start">
+        <button id="signup-btn" class="w-full sm:w-auto px-8 py-3 text-lg font-semibold text-white bg-indigo-500 rounded-xl shadow-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-transform duration-300 transform hover:scale-105">
+          Sign Up for Free
+        </button>
+        <a 
+          href="#features"
+          class="w-full sm:w-auto px-8 py-3 text-lg font-semibold text-indigo-500 bg-white rounded-xl shadow-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-transform duration-300 transform hover:scale-105"
+        >
+          Learn More
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-20 px-4 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">Powerful Features</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        <!-- Feature 1 -->
+        <div class="p-8 rounded-2xl shadow-xl bg-gray-50 text-center transition-transform duration-300 hover:scale-105">
+          <div class="text-4xl text-indigo-500 mb-4">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Predictive Analytics</h3>
+          <p class="text-gray-600">Harness the power of AI to forecast future trends with up to 99% accuracy.</p>
+        </div>
+        <!-- Feature 2 -->
+        <div class="p-8 rounded-2xl shadow-xl bg-gray-50 text-center transition-transform duration-300 hover:scale-105">
+          <div class="text-4xl text-green-500 mb-4">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Secure & Reliable</h3>
+          <p class="text-gray-600">Your data is safe with our end-to-end encryption and robust infrastructure.</p>
+        </div>
+        <!-- Feature 3 -->
+        <div class="p-8 rounded-2xl shadow-xl bg-gray-50 text-center transition-transform duration-300 hover:scale-105">
+          <div class="text-4xl text-yellow-500 mb-4">
+            <i class="fas fa-handshake"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Collaborative Tools</h3>
+          <p class="text-gray-600">Share insights and work together with your team in real-time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Section -->
+  <section id="pricing" class="py-20 px-4 bg-[#F7F9FA]">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">Kestrel vs. the Competition</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+        <!-- Kestrel Column -->
+        <div class="flex flex-col items-center p-10 bg-white rounded-2xl shadow-2xl border-2 border-indigo-500 scale-105 transition-transform duration-300">
+          <h3 class="text-3xl font-bold text-gray-900 mb-4">Kestrel</h3>
+          <ul class="text-gray-600 space-y-4 text-center">
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-check-circle text-green-500"></i><span>Predictive Accuracy: 99%</span></li>
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-check-circle text-green-500"></i><span>Real-time Data Processing</span></li>
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-check-circle text-green-500"></i><span>Advanced Collaboration</span></li>
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-check-circle text-green-500"></i><span>Customizable AI Models</span></li>
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-check-circle text-green-500"></i><span>On-Premise Support</span></li>
+          </ul>
+        </div>
+        <!-- Eagle Analytics Column -->
+        <div class="flex flex-col items-center p-10 bg-white rounded-2xl shadow-xl border-2 border-transparent transition-transform duration-300 hover:scale-105">
+          <h3 class="text-2xl font-bold text-gray-900 mb-4">Eagle Analytics</h3>
+          <ul class="text-gray-600 space-y-4 text-center">
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-times-circle text-red-500"></i><span>Predictive Accuracy: 92%</span></li>
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-check-circle text-green-500"></i><span>Real-time Data Processing</span></li>
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-times-circle text-red-500"></i><span>Basic Collaboration</span></li>
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-times-circle text-red-500"></i><span>No Customizable Models</span></li>
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-times-circle text-red-500"></i><span>No On-Premise Support</span></li>
+          </ul>
+        </div>
+        <!-- Falcon Insights Column -->
+        <div class="flex flex-col items-center p-10 bg-white rounded-2xl shadow-xl border-2 border-transparent transition-transform duration-300 hover:scale-105">
+          <h3 class="text-2xl font-bold text-gray-900 mb-4">Falcon Insights</h3>
+          <ul class="text-gray-600 space-y-4 text-center">
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-check-circle text-green-500"></i><span>Predictive Accuracy: 95%</span></li>
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-times-circle text-red-500"></i><span>Batch Data Processing</span></li>
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-check-circle text-green-500"></i><span>Advanced Collaboration</span></li>
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-times-circle text-red-500"></i><span>Limited Customizable Models</span></li>
+            <li class="flex items-center justify-center space-x-2"><i class="fas fa-check-circle text-green-500"></i><span>On-Premise Support</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 px-4 bg-gray-900 text-white">
+    <div class="max-w-6xl mx-auto text-center">
+      <p class="text-sm text-gray-400">&copy; <span id="current-year"></span> Kestrel. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Modal -->
+  <div id="modal-container" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75 p-4 hidden modal-overlay">
+    <div id="modal-content" class="bg-white p-8 rounded-xl shadow-2xl max-w-lg w-full transform transition-all duration-300 scale-95 opacity-0">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold text-gray-900">Get Started with Kestrel</h3>
+        <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors duration-300">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      <p class="text-gray-600 mb-4">Please note: This is a demo. No actual sign-up will occur.</p>
+      <div class="space-y-4">
+        <input 
+          type="email" 
+          placeholder="Your email address" 
+          class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+        <button id="submit-btn" class="w-full px-4 py-3 text-md font-semibold text-white bg-indigo-500 rounded-xl shadow-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Get the modal elements
+    const modalContainer = document.getElementById('modal-container');
+    const modalContent = document.getElementById('modal-content');
+    const getStartedBtn = document.getElementById('get-started-btn');
+    const signupBtn = document.getElementById('signup-btn');
+    const startFreeBtn = document.getElementById('start-free-btn');
+    const chooseProBtn = document.getElementById('choose-pro-btn');
+    const contactBtn = document.getElementById('contact-btn');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const submitBtn = document.getElementById('submit-btn');
+
+    // Function to show the modal
+    function showModal() {
+      modalContainer.classList.remove('hidden');
+      setTimeout(() => {
+        modalContainer.classList.add('opacity-100');
+        modalContent.classList.add('scale-100', 'opacity-100');
+        modalContent.classList.remove('scale-95', 'opacity-0');
+      }, 10); // A small delay is needed to trigger the transition
+    }
+
+    // Function to hide the modal
+    function hideModal() {
+      modalContent.classList.remove('scale-100', 'opacity-100');
+      modalContent.classList.add('scale-95', 'opacity-0');
+      modalContainer.classList.remove('opacity-100');
+      setTimeout(() => {
+        modalContainer.classList.add('hidden');
+      }, 300); // Wait for the transition to finish before hiding
+    }
+
+    // Add event listeners to all buttons that open the modal
+    getStartedBtn.addEventListener('click', showModal);
+    signupBtn.addEventListener('click', showModal);
+    // startFreeBtn.addEventListener('click', showModal);  // Removed because pricing section is gone
+    // chooseProBtn.addEventListener('click', showModal); // Removed because pricing section is gone
+    // contactBtn.addEventListener('click', showModal);   // Removed because pricing section is gone
+    
+    // Add event listener to the close button
+    closeModalBtn.addEventListener('click', hideModal);
+
+    // Add event listener to the submit button (for demo purposes)
+    submitBtn.addEventListener('click', hideModal);
+
+    // Close modal when clicking outside the content
+    modalContainer.addEventListener('click', (event) => {
+      if (event.target === modalContainer) {
+        hideModal();
+      }
+    });
+
+    // Set the current year in the footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
