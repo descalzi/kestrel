@@ -55,7 +55,7 @@
   @media (max-width:520px) { header nav a:not(.keep) { display:none; } }
 
   /* ---------- hero ---------- */
-  .hero { position:relative; min-height:min(74vh,560px); display:flex; align-items:flex-end; }
+  .hero { position:relative; min-height:min(76vh,600px); display:flex; align-items:flex-end; }
   .hero::before {
     content:""; position:absolute; inset:0;
     background:url("./images/features-visib.jpg") center/cover no-repeat;
@@ -64,7 +64,21 @@
     content:""; position:absolute; inset:0;
     background:linear-gradient(to top,rgba(10,14,20,1) 4%,rgba(10,14,20,.72) 45%,rgba(10,14,20,.25) 100%);
   }
-  .hero .wrap { position:relative; z-index:1; padding-bottom:3rem; padding-top:5rem; }
+  .hero .wrap {
+    position:relative; z-index:1; padding-bottom:3rem; padding-top:5rem;
+    display:flex; align-items:flex-end; gap:2rem;
+  }
+  .hero-copy { flex:1 1 auto; }
+  /* The mascot earns its place in the hero: the photograph carries the
+     message, the kestrel carries the personality. Sized to sit beside the
+     headline without competing with it, and dropped on narrow screens where
+     it would push the copy below the fold. */
+  .hero-mascot {
+    flex:0 0 auto; width:clamp(120px,17vw,210px); align-self:flex-end;
+    filter:drop-shadow(0 10px 30px rgba(0,0,0,.65));
+    margin-bottom:-.4rem;
+  }
+  @media (max-width:700px) { .hero-mascot { display:none; } }
   .hero h1 {
     font-size:clamp(2.1rem,6vw,3.4rem); line-height:1.05;
     margin:0 0 .7rem; letter-spacing:-.025em; text-shadow:0 2px 18px rgba(0,0,0,.6);
@@ -152,13 +166,17 @@
 
 <div class="hero">
   <div class="wrap">
-    <h1>See what's out there.</h1>
-    <p>
-      KestrelOne picks up the aircraft around you and puts them on the moving
-      map you already fly with.
-    </p>
-    <a class="cta" href="#install">Install firmware</a>
-    <a class="cta ghost" href="#how">How it works</a>
+    <div class="hero-copy">
+      <h1>See what's out there.</h1>
+      <p>
+        KestrelOne picks up the aircraft around you and puts them on the moving
+        map you already fly with.
+      </p>
+      <a class="cta" href="#install">Install firmware</a>
+      <a class="cta ghost" href="#how">How it works</a>
+    </div>
+    <img class="hero-mascot" src="./images/kestrel-logo-birdie-transp.png"
+         alt="The KestrelOne kestrel, in a leather flying helmet, saluting">
   </div>
 </div>
 
@@ -279,7 +297,7 @@
       </div>
 
       <div class="card">
-        <img src="./assets/birdie-radar.png" alt="" style="object-fit:contain;background:#fff">
+        <img src="./images/features-gps.jpg" alt="" style="object-position:center 30%">
         <div class="body">
           <h3>Tells you when it isn't working</h3>
           <p>
