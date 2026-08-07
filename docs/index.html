@@ -3,104 +3,136 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KestrelOne — See and be seen</title>
-<meta name="description" content="KestrelOne receives ADS-B traffic and sends it to your electronic flight bag over WiFi. Built for General Aviation.">
+<title>KestrelOne — See what's out there</title>
+<meta name="description" content="KestrelOne receives nearby aircraft and puts them on the moving map you already fly with. A receive-only traffic display for General Aviation.">
 <link rel="icon" type="image/png" href="./images/kestrel-logo-birdie-transp.png">
 
-<meta property="og:title" content="KestrelOne — See and be seen">
-<meta property="og:description" content="ADS-B traffic awareness for General Aviation, straight to your EFB.">
-<meta property="og:image" content="./images/kestrel-logo-birdie-transp.png">
+<meta property="og:title" content="KestrelOne — See what's out there">
+<meta property="og:description" content="A receive-only traffic display for General Aviation. Nearby aircraft, straight to your EFB.">
+<meta property="og:image" content="./images/features-visib.jpg">
 <meta property="og:type" content="website">
 
 <!--
-  Hand-written and self-contained: no build step, so this page can be edited
-  directly in the repository that serves it. The previous page was a compiled
-  React bundle whose source lived elsewhere, which meant it could not be
-  changed from here at all.
+  Hand-written and self-contained so it can be edited in the repository that
+  serves it.
 
-  The one external dependency is ESP Web Tools, which is unavoidable — it is
-  what talks to the device over WebSerial.
+  A note on the copy, because it was wrong once already: this device RECEIVES.
+  It does not transmit. The previous page used "see and be seen", which is the
+  standard electronic-conspicuity phrase and claims both halves — a pilot
+  could reasonably have concluded it made them visible to others. It does not;
+  their transponder does. Every claim here is limited to what the hardware
+  actually does, and the receive-only limitation is stated prominently rather
+  than buried in a disclaimer.
 -->
 <style>
   :root {
-    --bg:#0b1017; --panel:#141c27; --line:#243244;
-    --text:#e8eef6; --dim:#93a4b8;
-    --accent:#4ea8ff; --ok:#3fb950; --warn:#d29922;
-    --sky1:#0d1b2a; --sky2:#1b3a5c;
+    --bg:#0a0e14; --panel:#131a24; --line:#232f3e;
+    --text:#eaf1f8; --dim:#8fa3b8; --accent:#54a9ff;
+    --warn:#e0a94a; --ok:#4cc072;
   }
   * { box-sizing:border-box; }
   html { scroll-behavior:smooth; }
   body {
     margin:0; background:var(--bg); color:var(--text);
-    font:17px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font:17px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
     -webkit-font-smoothing:antialiased;
   }
   a { color:var(--accent); }
-  .wrap { max-width:1060px; margin:0 auto; padding:0 1.25rem; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
 
+  /* ---------- header ---------- */
   header {
-    position:sticky; top:0; z-index:10; backdrop-filter:blur(10px);
-    background:rgba(11,16,23,.82); border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:20;
+    background:rgba(10,14,20,.85); backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
   }
-  header .wrap { display:flex; align-items:center; gap:.7rem; padding-top:.6rem; padding-bottom:.6rem; }
-  header img { height:34px; }
-  header b { font-size:1.05rem; letter-spacing:.01em; }
-  header nav { margin-left:auto; display:flex; gap:1.2rem; font-size:.9rem; }
+  header .wrap { display:flex; align-items:center; gap:.65rem; padding:.55rem 1.25rem; }
+  header img { height:32px; }
+  header b { font-size:1.02rem; letter-spacing:.005em; }
+  header nav { margin-left:auto; display:flex; gap:1.3rem; font-size:.88rem; }
   header nav a { color:var(--dim); text-decoration:none; }
   header nav a:hover { color:var(--text); }
+  @media (max-width:520px) { header nav a:not(.keep) { display:none; } }
 
-  .hero {
-    background:linear-gradient(160deg,var(--sky1),var(--sky2));
-    border-bottom:1px solid var(--line); padding:3.5rem 0 3rem;
+  /* ---------- hero ---------- */
+  .hero { position:relative; min-height:min(74vh,560px); display:flex; align-items:flex-end; }
+  .hero::before {
+    content:""; position:absolute; inset:0;
+    background:url("./images/features-visib.jpg") center/cover no-repeat;
   }
-  .hero .wrap { display:flex; align-items:center; gap:2.5rem; flex-wrap:wrap; }
-  .hero img { width:190px; flex:0 0 auto; filter:drop-shadow(0 8px 24px rgba(0,0,0,.45)); }
-  .hero-copy { flex:1 1 320px; }
-  .hero h1 { font-size:2.6rem; line-height:1.1; margin:0 0 .6rem; letter-spacing:-.02em; }
-  .hero .tag { font-size:1.15rem; color:#cfe2f7; margin:0 0 1.4rem; }
-  .cta { display:inline-block; background:var(--accent); color:#04121f; font-weight:650;
-         text-decoration:none; padding:.7rem 1.3rem; border-radius:8px; }
-  .cta.ghost { background:transparent; color:var(--text); border:1px solid var(--line); margin-left:.5rem; }
+  .hero::after {
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(to top,rgba(10,14,20,1) 4%,rgba(10,14,20,.72) 45%,rgba(10,14,20,.25) 100%);
+  }
+  .hero .wrap { position:relative; z-index:1; padding-bottom:3rem; padding-top:5rem; }
+  .hero h1 {
+    font-size:clamp(2.1rem,6vw,3.4rem); line-height:1.05;
+    margin:0 0 .7rem; letter-spacing:-.025em; text-shadow:0 2px 18px rgba(0,0,0,.6);
+  }
+  .hero p { font-size:clamp(1rem,2.4vw,1.22rem); color:#d6e4f2; max-width:34ch; margin:0 0 1.6rem; }
+  .cta {
+    display:inline-block; background:var(--accent); color:#04121f; font-weight:650;
+    text-decoration:none; padding:.72rem 1.4rem; border-radius:8px; font-size:1rem;
+  }
+  .cta.ghost { background:rgba(255,255,255,.07); color:var(--text); border:1px solid var(--line); margin-left:.45rem; }
 
-  section { padding:3.2rem 0; border-bottom:1px solid var(--line); }
-  h2 { font-size:1.5rem; margin:0 0 .5rem; letter-spacing:-.01em; }
-  .lede { color:var(--dim); margin:0 0 2rem; max-width:60ch; }
+  /* ---------- the honest bit ---------- */
+  .truth { background:var(--panel); border-bottom:1px solid var(--line); padding:2.4rem 0; }
+  .truth .wrap { display:flex; gap:1.6rem; align-items:flex-start; flex-wrap:wrap; }
+  .truth .mark {
+    flex:0 0 auto; width:44px; height:44px; border-radius:10px;
+    border:1px solid var(--warn); color:var(--warn);
+    display:flex; align-items:center; justify-content:center; font-size:1.35rem;
+  }
+  .truth .body { flex:1 1 320px; }
+  .truth h2 { font-size:1.22rem; margin:.1rem 0 .5rem; }
+  .truth p { margin:0 0 .6rem; color:var(--dim); max-width:66ch; }
+  .truth strong { color:var(--text); font-weight:600; }
 
-  .grid { display:grid; gap:1.1rem; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); }
+  /* ---------- sections ---------- */
+  section { padding:3.6rem 0; border-bottom:1px solid var(--line); }
+  h2.sec { font-size:1.6rem; margin:0 0 .45rem; letter-spacing:-.015em; }
+  .lede { color:var(--dim); margin:0 0 2.2rem; max-width:62ch; }
+
+  .flow { display:grid; gap:1.6rem; grid-template-columns:1fr; align-items:center; }
+  @media (min-width:860px) { .flow { grid-template-columns:1.15fr .85fr; } }
+  .flow img { width:100%; border-radius:12px; border:1px solid var(--line); background:#f7f7f2; }
+  .steps { counter-reset:s; list-style:none; padding:0; margin:0; }
+  .steps li { counter-increment:s; position:relative; padding-left:2.6rem; margin:0 0 1.3rem; }
+  .steps li::before {
+    content:counter(s); position:absolute; left:0; top:0;
+    width:1.85rem; height:1.85rem; border-radius:50%;
+    background:var(--panel); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:.85rem; color:var(--accent);
+  }
+  .steps b { display:block; margin-bottom:.1rem; }
+  .steps span { color:var(--dim); font-size:.94rem; }
+
+  .grid { display:grid; gap:1.15rem; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
   .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
-  .card img { width:100%; height:150px; object-fit:cover; display:block; }
-  .card .body { padding:1rem 1.1rem 1.2rem; }
-  .card h3 { margin:0 0 .35rem; font-size:1rem; }
+  .card img { width:100%; height:156px; object-fit:cover; display:block; }
+  .card .body { padding:1.05rem 1.15rem 1.25rem; }
+  .card h3 { margin:0 0 .35rem; font-size:1.02rem; }
   .card p { margin:0; color:var(--dim); font-size:.92rem; }
   .badge {
-    display:inline-block; font-size:.68rem; letter-spacing:.06em; text-transform:uppercase;
-    padding:.12rem .45rem; border-radius:4px; border:1px solid var(--warn);
-    color:var(--warn); margin-left:.4rem; vertical-align:middle;
+    display:inline-block; font-size:.65rem; letter-spacing:.07em; text-transform:uppercase;
+    padding:.1rem .42rem; border-radius:4px; border:1px solid var(--warn);
+    color:var(--warn); margin-left:.35rem; vertical-align:middle; font-weight:600;
   }
 
-  .install { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:1.6rem; }
-  .steps { counter-reset:s; list-style:none; padding:0; margin:0 0 1.4rem; }
-  .steps li { counter-increment:s; position:relative; padding-left:2.1rem; margin:.6rem 0; color:var(--dim); }
-  .steps li::before {
-    content:counter(s); position:absolute; left:0; top:.05rem;
-    width:1.5rem; height:1.5rem; border-radius:50%; background:var(--bg);
-    border:1px solid var(--line); color:var(--text);
-    font-size:.8rem; display:flex; align-items:center; justify-content:center;
-  }
-  .note { font-size:.86rem; color:var(--dim); margin-top:1rem; }
-  .unsupported { color:var(--warn); }
+  /* ---------- install ---------- */
+  .install { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:1.7rem; }
+  .install .steps li { margin-bottom:.75rem; }
+  .unsupported { color:var(--warn); display:block; margin-top:.4rem; font-size:.92rem; }
+  .note { font-size:.88rem; color:var(--dim); margin:1.1rem 0 0; }
   code { background:var(--bg); border:1px solid var(--line); border-radius:4px; padding:.05rem .35rem; font-size:.9em; }
 
-  table.spec { width:100%; border-collapse:collapse; font-size:.93rem; }
-  table.spec th, table.spec td { text-align:left; padding:.5rem .2rem; border-bottom:1px solid var(--line); vertical-align:top; }
-  table.spec th { color:var(--dim); font-weight:600; width:34%; }
+  table.spec { width:100%; border-collapse:collapse; font-size:.94rem; }
+  table.spec th, table.spec td { text-align:left; padding:.62rem .2rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  table.spec th { color:var(--dim); font-weight:600; width:32%; }
 
-  footer { padding:2rem 0 3rem; color:var(--dim); font-size:.88rem; }
-  .warn-box {
-    border:1px solid var(--warn); border-radius:10px; padding:1rem 1.1rem;
-    background:rgba(210,153,34,.07); font-size:.92rem; margin-top:2rem;
-  }
-  @media (max-width:640px) { .hero h1 { font-size:2rem; } .hero img { width:130px; } }
+  footer { padding:2.4rem 0 3.4rem; color:var(--dim); font-size:.87rem; }
+  footer img { height:40px; vertical-align:middle; margin-right:.6rem; opacity:.85; }
 </style>
 </head>
 <body>
@@ -110,8 +142,9 @@
     <img src="./images/kestrel-logo-birdie-transp.png" alt="">
     <b>KestrelOne</b>
     <nav>
+      <a href="#how">How it works</a>
       <a href="#features">Features</a>
-      <a href="#install">Install</a>
+      <a href="#install" class="keep">Install</a>
       <a href="#specs">Specs</a>
     </nav>
   </div>
@@ -119,35 +152,83 @@
 
 <div class="hero">
   <div class="wrap">
-    <img src="./images/kestrel-logo-birdie-transp.png" alt="KestrelOne">
-    <div class="hero-copy">
-      <h1>See and be seen.</h1>
-      <p class="tag">
-        KestrelOne listens for nearby aircraft and puts them on the moving map you
-        already fly with. Battery powered, no installation, no subscription.
+    <h1>See what's out there.</h1>
+    <p>
+      KestrelOne picks up the aircraft around you and puts them on the moving
+      map you already fly with.
+    </p>
+    <a class="cta" href="#install">Install firmware</a>
+    <a class="cta ghost" href="#how">How it works</a>
+  </div>
+</div>
+
+<div class="truth">
+  <div class="wrap">
+    <div class="mark">&#8593;</div>
+    <div class="body">
+      <h2>It receives. It does not transmit.</h2>
+      <p>
+        KestrelOne shows you aircraft that are broadcasting their position.
+        <strong>It does not make you visible to anyone else</strong> &mdash; your
+        transponder does that, and nothing here changes it.
       </p>
-      <a class="cta" href="#install">Install firmware</a>
-      <a class="cta ghost" href="#features">What it does</a>
+      <p>
+        It also cannot see aircraft that transmit nothing at all, which on a quiet
+        afternoon is a good many of them. Treat it as another pair of eyes, never
+        as a reason to spend less time looking out of the window.
+      </p>
     </div>
   </div>
 </div>
 
+<section id="how">
+  <div class="wrap">
+    <h2 class="sec">How it works</h2>
+    <p class="lede">
+      Three things, in a box that fits in a flight bag and runs on its own battery.
+    </p>
+    <div class="flow">
+      <img src="./images/diagram-signals.png"
+           alt="Aircraft, an airliner, a drone, a glider and a paraglider all sending signals inward to a light aircraft">
+      <ol class="steps">
+        <li>
+          <b>Listens</b>
+          <span>Picks up 1090&nbsp;MHz ADS-B and Mode&nbsp;S from aircraft around you and
+          decodes position, altitude, callsign and climb rate.</span>
+        </li>
+        <li>
+          <b>Works out where you are</b>
+          <span>Its own GNSS receiver and barometer establish your position and
+          pressure altitude, so traffic is shown relative to you rather than in
+          the abstract.</span>
+        </li>
+        <li>
+          <b>Sends it to your tablet</b>
+          <span>Broadcasts GDL90 over its own WiFi network. SkyDemon and other
+          flight apps pick it up with no cables and nothing to configure.</span>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
 <section id="features">
   <div class="wrap">
-    <h2>What it does</h2>
+    <h2 class="sec">What you get</h2>
     <p class="lede">
-      A self-contained receiver for General Aviation. It hears the traffic around
-      you, works out where you are, and hands both to your electronic flight bag.
+      No installation, no wiring, no subscription. Charge it, switch it on, connect
+      your tablet.
     </p>
 
     <div class="grid">
       <div class="card">
         <img src="./images/features-adsb.jpg" alt="">
         <div class="body">
-          <h3>ADS-B traffic</h3>
+          <h3>ADS-B and Mode&nbsp;S</h3>
           <p>
-            Receives and decodes 1090&nbsp;MHz Mode&nbsp;S and ADS-B, tracking position,
-            altitude, callsign and vertical rate for aircraft around you.
+            Decodes aircraft broadcasting on 1090&nbsp;MHz. Those reporting a position
+            appear on the map; those heard without one are listed separately rather
+            than guessed at.
           </p>
         </div>
       </div>
@@ -157,8 +238,8 @@
         <div class="body">
           <h3>Straight to your EFB</h3>
           <p>
-            Broadcasts GDL90 over its own WiFi network. SkyDemon and other flight
-            apps pick it up with no cables and nothing to configure.
+            Standard GDL90 over WiFi, the same format commercial receivers use.
+            If your app takes traffic from a portable receiver, it will take this.
           </p>
         </div>
       </div>
@@ -166,10 +247,10 @@
       <div class="card">
         <img src="./images/features-gps.jpg" alt="">
         <div class="body">
-          <h3>Position and altitude</h3>
+          <h3>Knows where you are</h3>
           <p>
-            A built-in GNSS receiver and barometer give your own position and
-            pressure altitude, so traffic is shown relative to you.
+            Built-in GNSS and a barometer give your own position and pressure
+            altitude, so nearby traffic is shown as height above or below you.
           </p>
         </div>
       </div>
@@ -177,10 +258,10 @@
       <div class="card">
         <img src="./images/features-light.jpg" alt="">
         <div class="body">
-          <h3>Battery powered</h3>
+          <h3>Grab and go</h3>
           <p>
-            Runs from an internal cell with USB-C charging and a fuel gauge.
-            Nothing to wire into the aircraft.
+            Internal battery with USB-C charging and a fuel gauge. Nothing to wire
+            into the aircraft, nothing to certify, moves between aircraft freely.
           </p>
         </div>
       </div>
@@ -188,21 +269,22 @@
       <div class="card">
         <img src="./images/features-glider.jpg" alt="">
         <div class="body">
-          <h3>868&nbsp;MHz conspicuity <span class="badge">in development</span></h3>
+          <h3>Gliders and paragliders <span class="badge">in development</span></h3>
           <p>
-            Hardware is fitted for FLARM, OGN, PilotAware and FANET reception.
-            The receiver is present; decoding is still being built.
+            An 868&nbsp;MHz receiver is fitted for FLARM, OGN, PilotAware and FANET
+            &mdash; the traffic that never appears on ADS-B. The hardware is in every
+            unit; the decoding is still being written.
           </p>
         </div>
       </div>
 
       <div class="card">
-        <img src="./images/features-visib.jpg" alt="">
+        <img src="./assets/birdie-radar.png" alt="" style="object-fit:contain;background:#fff">
         <div class="body">
-          <h3>Status at a glance</h3>
+          <h3>Tells you when it isn't working</h3>
           <p>
-            One status light answers "is it working?", and a built-in web page
-            shows traffic, signal quality and settings from any phone.
+            One status light answers "is it working?" at a glance, and a built-in
+            web page shows traffic, signal quality and settings from any phone.
           </p>
         </div>
       </div>
@@ -212,24 +294,24 @@
 
 <section id="install">
   <div class="wrap">
-    <h2>Install firmware</h2>
+    <h2 class="sec">Install firmware</h2>
     <p class="lede">
-      Firmware is installed straight from this page over USB &mdash; nothing to
-      download and no tools to set up.
+      Firmware installs straight from this page over USB. Nothing to download, no
+      tools to set up.
     </p>
 
     <div class="install">
       <ol class="steps">
-        <li>Connect KestrelOne to this computer with a USB-C cable.</li>
-        <li>Press <b>Install</b> and choose the KestrelOne serial port when asked.</li>
-        <li>Wait for it to finish, then reconnect to the <code>KestrelOne</code> WiFi network.</li>
+        <li><b>Connect</b><span>Plug KestrelOne into this computer with a USB-C cable.</span></li>
+        <li><b>Install</b><span>Press the button below and choose the KestrelOne serial port.</span></li>
+        <li><b>Connect to it</b><span>When it finishes, join the <code>KestrelOne</code> WiFi network from your phone or tablet.</span></li>
       </ol>
 
       <esp-web-install-button manifest="./firmware/latest/manifest.json">
         <button slot="activate" class="cta">Install</button>
         <span slot="unsupported" class="unsupported">
           This browser cannot talk to USB devices. Use Chrome or Edge on a desktop
-          computer &mdash; Safari and Firefox do not support it, and neither do phones or tablets.
+          computer &mdash; Safari and Firefox do not support it, and nor do phones or tablets.
         </span>
         <span slot="not-allowed" class="unsupported">
           Serial access was blocked. This page must be opened over HTTPS.
@@ -237,39 +319,36 @@
       </esp-web-install-button>
 
       <p class="note">
-        Choosing <b>Erase device</b> during install clears saved settings and WiFi
-        credentials as well as the firmware. Leave it unticked to keep them.
+        Ticking <b>Erase device</b> during install clears saved settings and WiFi
+        credentials along with the firmware. Leave it unticked to keep them.
       </p>
-    </div>
-
-    <div class="warn-box">
-      <b>Advisory use only.</b> KestrelOne shows traffic that is broadcasting its
-      position. It cannot see aircraft that are not transmitting, and it is not a
-      collision avoidance system. It does not replace looking out of the window.
     </div>
   </div>
 </section>
 
 <section id="specs">
   <div class="wrap">
-    <h2>Specifications</h2>
+    <h2 class="sec">Specifications</h2>
     <table class="spec">
-      <tr><th>Traffic reception</th><td>1090&nbsp;MHz ADS-B and Mode&nbsp;S (DF17/18, DF11, DF0/4/5/16/20/21)</td></tr>
-      <tr><th>Conspicuity</th><td>868&nbsp;MHz receiver fitted &mdash; FLARM, OGN, PilotAware, FANET, ADS-L <span class="badge">in development</span></td></tr>
+      <tr><th>Traffic reception</th><td>1090&nbsp;MHz ADS-B and Mode&nbsp;S &mdash; extended squitter, all-call and surveillance replies</td></tr>
+      <tr><th>Conspicuity reception</th><td>868&nbsp;MHz receiver fitted for FLARM, OGN, PilotAware, FANET and ADS-L <span class="badge">in development</span></td></tr>
+      <tr><th>Transmission</th><td>None. Receive only.</td></tr>
       <tr><th>Position</th><td>Multi-constellation GNSS with 1&nbsp;PPS timing</td></tr>
       <tr><th>Altitude</th><td>Barometric pressure altitude, 25&nbsp;ft resolution</td></tr>
       <tr><th>Output</th><td>GDL90 over WiFi (UDP&nbsp;4000) &mdash; ownship, traffic and heartbeat</td></tr>
       <tr><th>Network</th><td>Hosts its own access point, or joins an existing network</td></tr>
       <tr><th>Power</th><td>Internal lithium cell, USB-C charging, battery gauge</td></tr>
       <tr><th>Interface</th><td>Built-in web page for traffic, signal quality and settings</td></tr>
+      <tr><th>Updates</th><td>Installed from this page over USB</td></tr>
     </table>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    Kestrel Aviation &middot; KestrelOne is an experimental project and is not a
-    certified aviation device.
+    <img src="./images/kestrel-logo-birdie-transp.png" alt="">
+    Kestrel Aviation &middot; KestrelOne is an experimental project, not a certified
+    aviation device. Advisory use only.
   </div>
 </footer>
 
