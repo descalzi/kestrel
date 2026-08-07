@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KestrelOne — See what's out there</title>
-<meta name="description" content="KestrelOne receives nearby aircraft and puts them on the moving map you already fly with. A receive-only traffic display for General Aviation.">
+<title>KestrelOne — ADS-B traffic for SkyDemon and ForeFlight</title>
+<meta name="description" content="KestrelOne is a portable receive-only ADS-B and Mode S traffic receiver for General Aviation. It sends GDL90 traffic over WiFi to SkyDemon, ForeFlight and other EFB apps.">
 <link rel="icon" type="image/png" href="./images/kestrel-logo-birdie-transp.png">
 
 <meta property="og:title" content="KestrelOne — See what's out there">
-<meta property="og:description" content="A receive-only traffic display for General Aviation. Nearby aircraft, straight to your EFB.">
+<meta property="og:description" content="A portable receive-only traffic receiver for General Aviation. Nearby aircraft, straight to SkyDemon or ForeFlight.">
 <meta property="og:image" content="./images/features-visib.jpg">
 <meta property="og:type" content="website">
 
@@ -21,8 +21,7 @@
   standard electronic-conspicuity phrase and claims both halves — a pilot
   could reasonably have concluded it made them visible to others. It does not;
   their transponder does. Every claim here is limited to what the hardware
-  actually does, and the receive-only limitation is stated prominently rather
-  than buried in a disclaimer.
+  actually does.
 -->
 <style>
   :root {
@@ -90,42 +89,49 @@
   }
   .cta.ghost { background:rgba(255,255,255,.07); color:var(--text); border:1px solid var(--line); margin-left:.45rem; }
 
-  /* ---------- what it hears ---------- */
-  .hears { background:var(--panel); border-bottom:1px solid var(--line); padding:2.8rem 0; }
-  .hears h2 { font-size:1.35rem; margin:0 0 .35rem; letter-spacing:-.015em; }
-  .hears .lede { margin-bottom:1.6rem; }
-  .hears-diagram {
-    width:100%; max-width:640px; display:block; margin:0 auto 1.8rem;
-    border-radius:12px; border:1px solid var(--line); background:#f7f7f2;
-  }
-  .proto { display:grid; gap:.9rem; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); }
-  .proto div {
-    border:1px solid var(--line); border-radius:10px; padding:.85rem 1rem;
-    background:var(--bg);
-  }
-  .proto b { display:block; font-size:.98rem; margin-bottom:.12rem; }
-  .proto span { color:var(--dim); font-size:.87rem; }
-  .proto .soon { border-style:dashed; }
-  .hears .foot { color:var(--dim); font-size:.9rem; margin:1.5rem 0 0; max-width:70ch; }
-
   /* ---------- sections ---------- */
   section { padding:3.6rem 0; border-bottom:1px solid var(--line); }
   h2.sec { font-size:1.6rem; margin:0 0 .45rem; letter-spacing:-.015em; }
   .lede { color:var(--dim); margin:0 0 2.2rem; max-width:62ch; }
 
-  .flow { display:grid; gap:1.6rem; grid-template-columns:1fr; align-items:center; }
-  @media (min-width:860px) { .flow { grid-template-columns:1.15fr .85fr; } }
-  .flow img { width:100%; border-radius:12px; border:1px solid var(--line); background:#f7f7f2; }
-  .steps { counter-reset:s; list-style:none; padding:0; margin:0; }
-  .steps li { counter-increment:s; position:relative; padding-left:2.6rem; margin:0 0 1.3rem; }
-  .steps li::before {
-    content:counter(s); position:absolute; left:0; top:0;
-    width:1.85rem; height:1.85rem; border-radius:50%;
-    background:var(--panel); border:1px solid var(--line);
-    display:flex; align-items:center; justify-content:center; font-size:.85rem; color:var(--accent);
+  /* ---------- what it hears ---------- */
+  /* Diagram and protocol list are two halves of one statement, so they sit
+     side by side and share a baseline rather than the diagram floating above
+     a detached grid of boxes. */
+  .hears { background:var(--panel); }
+  .hears-split { display:grid; gap:2.2rem; grid-template-columns:1fr; align-items:center; }
+  @media (min-width:900px) {
+    .hears-split { grid-template-columns:minmax(0,1.02fr) minmax(0,1fr); gap:3rem; }
   }
-  .steps b { display:block; margin-bottom:.1rem; }
-  .steps span { color:var(--dim); font-size:.94rem; }
+  .hears-figure { margin:0; }
+  .hears-figure img {
+    width:100%; display:block; border-radius:12px;
+    border:1px solid var(--line); background:#f7f7f2;
+  }
+  .hears-figure figcaption {
+    color:var(--dim); font-size:.85rem; line-height:1.5;
+    margin-top:.75rem; text-align:center;
+  }
+
+  .proto { list-style:none; margin:0; padding:0; }
+  .proto li {
+    display:grid; grid-template-columns:auto 1fr; gap:.05rem .85rem;
+    padding:.78rem 0; border-bottom:1px solid var(--line);
+  }
+  .proto li:first-child { padding-top:0; }
+  .proto li:last-child { border-bottom:0; padding-bottom:0; }
+  /* A filled pip means the decoder is done and flying; a hollow one means it
+     is not. Colour alone would not carry that, hence the shape difference. */
+  .proto .pip {
+    grid-row:1 / 3; width:.6rem; height:.6rem; border-radius:50%;
+    margin-top:.52rem; background:var(--ok);
+    box-shadow:0 0 0 3.5px rgba(76,192,114,.15);
+  }
+  .proto .soon .pip { background:transparent; border:1.5px solid #4a5b6e; box-shadow:none; }
+  .proto b { font-size:.99rem; font-weight:650; }
+  .proto .soon b { color:#b9c8d8; }
+  .proto .desc { color:var(--dim); font-size:.88rem; line-height:1.55; }
+  .hears .foot { color:var(--dim); font-size:.9rem; margin:2.2rem 0 0; max-width:74ch; }
 
   .grid { display:grid; gap:1.15rem; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
   .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
@@ -139,9 +145,30 @@
     color:var(--warn); margin-left:.35rem; vertical-align:middle; font-weight:600;
   }
 
-  /* ---------- install ---------- */
+  /* ---------- firmware ---------- */
   .install { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:1.7rem; }
-  .install .steps li { margin-bottom:.75rem; }
+  .steps { counter-reset:s; list-style:none; padding:0; margin:0; }
+  .steps li { counter-increment:s; position:relative; padding-left:2.6rem; margin:0 0 .75rem; }
+  .steps li::before {
+    content:counter(s); position:absolute; left:0; top:0;
+    width:1.85rem; height:1.85rem; border-radius:50%;
+    background:var(--bg); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:.85rem; color:var(--accent);
+  }
+  .steps b { display:block; margin-bottom:.1rem; }
+  .steps span { color:var(--dim); font-size:.94rem; }
+
+  .release {
+    display:flex; flex-wrap:wrap; align-items:baseline; gap:.35rem .9rem;
+    background:var(--bg); border:1px solid var(--line); border-radius:10px;
+    padding:.95rem 1.15rem; margin:0 0 1.6rem;
+  }
+  .release .k { font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; color:var(--dim); }
+  .release .v { font-size:1.2rem; font-weight:650; letter-spacing:-.01em; }
+  .release .v.pending { font-size:1rem; font-weight:400; color:var(--dim); }
+  .release .d { color:var(--dim); font-size:.88rem; }
+  .release .hint { flex-basis:100%; color:var(--dim); font-size:.86rem; margin:.2rem 0 0; }
+
   .unsupported { color:var(--warn); display:block; margin-top:.4rem; font-size:.92rem; }
   .note { font-size:.88rem; color:var(--dim); margin:1.1rem 0 0; }
   code { background:var(--bg); border:1px solid var(--line); border-radius:4px; padding:.05rem .35rem; font-size:.9em; }
@@ -162,7 +189,7 @@
     <b>KestrelOne</b>
     <nav>
       <a href="#features">Features</a>
-      <a href="#install" class="keep">Install</a>
+      <a href="#firmware" class="keep">Firmware</a>
       <a href="#specs">Specs</a>
     </nav>
   </div>
@@ -176,50 +203,64 @@
         KestrelOne picks up the aircraft around you and puts them on the moving
         map you already fly with.
       </p>
-      <a class="cta" href="#install">Install firmware</a>
-      <a class="cta ghost" href="#features">What you get</a>
+      <a class="cta" href="#features">What you get</a>
+      <a class="cta ghost" href="#firmware">Firmware</a>
     </div>
     <img class="hero-mascot" src="./images/kestrel-logo-birdie-transp.png"
          alt="The KestrelOne kestrel, in a leather flying helmet, saluting">
   </div>
 </div>
 
-<div class="hears">
+<section class="hears">
   <div class="wrap">
-    <h2>What it hears</h2>
+    <h2 class="sec">What it hears</h2>
     <p class="lede">
       Airliners and ADS-B-equipped aircraft today, with the gliding and
       paragliding world arriving as the decoders are finished.
     </p>
 
-    <img class="hears-diagram" src="./images/diagram-signals.png"
-         alt="A light aircraft receiving signals from an airliner, a drone, a glider, a paraglider and another light aircraft">
+    <div class="hears-split">
+      <figure class="hears-figure">
+        <img src="./images/diagram-signals.png"
+             alt="A light aircraft receiving signals from an airliner, a drone, a glider, a paraglider and another light aircraft">
+        <figcaption>
+          Two receivers listening at once &mdash; 1090&nbsp;MHz for transponders
+          and ADS-B, 868&nbsp;MHz for the low-power conspicuity networks.
+        </figcaption>
+      </figure>
 
-    <div class="proto">
-      <div>
-        <b>ADS-B</b>
-        <span>Position, altitude, callsign and climb rate on 1090&nbsp;MHz</span>
-      </div>
-      <div>
-        <b>Mode&nbsp;S</b>
-        <span>Transponder replies from aircraft without ADS-B</span>
-      </div>
-      <div class="soon">
-        <b>FLARM &amp; OGN <span class="badge">soon</span></b>
-        <span>Gliders, tugs and the Open Glider Network</span>
-      </div>
-      <div class="soon">
-        <b>PilotAware <span class="badge">soon</span></b>
-        <span>The P3I network, widely flown in UK GA</span>
-      </div>
-      <div class="soon">
-        <b>FANET <span class="badge">soon</span></b>
-        <span>Paragliders and hang gliders</span>
-      </div>
-      <div class="soon">
-        <b>ADS-L <span class="badge">soon</span></b>
-        <span>The open EASA-backed standard</span>
-      </div>
+      <ul class="proto">
+        <li>
+          <i class="pip"></i>
+          <b>ADS-B</b>
+          <span class="desc">Position, altitude, callsign and climb rate on 1090&nbsp;MHz</span>
+        </li>
+        <li>
+          <i class="pip"></i>
+          <b>Mode&nbsp;S</b>
+          <span class="desc">Transponder replies from aircraft without ADS-B</span>
+        </li>
+        <li class="soon">
+          <i class="pip"></i>
+          <b>FLARM &amp; OGN <span class="badge">soon</span></b>
+          <span class="desc">Gliders, tugs and the Open Glider Network</span>
+        </li>
+        <li class="soon">
+          <i class="pip"></i>
+          <b>PilotAware <span class="badge">soon</span></b>
+          <span class="desc">The P3I network, widely flown in UK GA</span>
+        </li>
+        <li class="soon">
+          <i class="pip"></i>
+          <b>FANET <span class="badge">soon</span></b>
+          <span class="desc">Paragliders and hang gliders</span>
+        </li>
+        <li class="soon">
+          <i class="pip"></i>
+          <b>ADS-L <span class="badge">soon</span></b>
+          <span class="desc">The open EASA-backed standard</span>
+        </li>
+      </ul>
     </div>
 
     <p class="foot">
@@ -229,7 +270,7 @@
       beside a good lookout rather than instead of one.
     </p>
   </div>
-</div>
+</section>
 
 <section id="features">
   <div class="wrap">
@@ -243,11 +284,12 @@
       <div class="card">
         <img src="./images/features-efb.jpg" alt="">
         <div class="body">
-          <h3>Traffic on the map you already use</h3>
+          <h3>Straight to your EFB</h3>
           <p>
-            Standard GDL90 over its own WiFi network &mdash; the same format
-            commercial receivers use. SkyDemon and other flight apps pick it up
-            with no cables and nothing to configure.
+            Traffic goes out as standard GDL90 over WiFi &mdash; the format
+            SkyDemon, ForeFlight and other flight apps already expect from a
+            traffic receiver. Join its network and the targets appear on the map
+            you were flying with anyway.
           </p>
         </div>
       </div>
@@ -257,9 +299,10 @@
         <div class="body">
           <h3>Knows where you are</h3>
           <p>
-            Built-in satellite positioning and a barometer establish your own
-            position and pressure altitude, so nearby traffic is shown as height
-            above or below you rather than as a number to work out.
+            A multi-constellation receiver fixes your position from GPS, GLONASS
+            and Galileo together, and a barometer reads your pressure altitude.
+            Nearby traffic is shown as height above or below you rather than as a
+            number to work out.
           </p>
         </div>
       </div>
@@ -279,23 +322,34 @@
   </div>
 </section>
 
-<section id="install">
+<section id="firmware">
   <div class="wrap">
-    <h2 class="sec">Install firmware</h2>
+    <h2 class="sec">Firmware updates</h2>
     <p class="lede">
-      Firmware installs straight from this page over USB. Nothing to download, no
-      tools to set up.
+      Your KestrelOne arrives ready to fly. Come back here when a new version is
+      released &mdash; it updates straight from this page over USB, with nothing
+      to download and no tools to set up.
     </p>
 
     <div class="install">
+      <div class="release">
+        <span class="k">Latest version</span>
+        <span class="v" id="rel-version">Checking&hellip;</span>
+        <span class="d" id="rel-date"></span>
+        <p class="hint">
+          Your device shows the version it is running on its own web page, under
+          <b>Status</b>. If they match, there is nothing to do.
+        </p>
+      </div>
+
       <ol class="steps">
         <li><b>Connect</b><span>Plug KestrelOne into this computer with a USB-C cable.</span></li>
-        <li><b>Install</b><span>Press the button below and choose the KestrelOne serial port.</span></li>
-        <li><b>Connect to it</b><span>When it finishes, join the <code>KestrelOne</code> WiFi network from your phone or tablet.</span></li>
+        <li><b>Update</b><span>Press the button below and choose the KestrelOne serial port.</span></li>
+        <li><b>Reconnect</b><span>When it finishes, join the <code>KestrelOne</code> WiFi network again from your phone or tablet.</span></li>
       </ol>
 
       <esp-web-install-button manifest="./firmware/latest/manifest.json">
-        <button slot="activate" class="cta">Install</button>
+        <button slot="activate" class="cta">Update over USB</button>
         <span slot="unsupported" class="unsupported">
           This browser cannot talk to USB devices. Use Chrome or Edge on a desktop
           computer &mdash; Safari and Firefox do not support it, and nor do phones or tablets.
@@ -306,8 +360,8 @@
       </esp-web-install-button>
 
       <p class="note">
-        Ticking <b>Erase device</b> during install clears saved settings and WiFi
-        credentials along with the firmware. Leave it unticked to keep them.
+        An update keeps your settings and WiFi credentials. Ticking
+        <b>Erase device</b> wipes them and returns it to factory defaults.
       </p>
     </div>
   </div>
@@ -320,7 +374,7 @@
       <tr><th>Traffic reception</th><td>1090&nbsp;MHz ADS-B and Mode&nbsp;S &mdash; extended squitter, all-call and surveillance replies</td></tr>
       <tr><th>Conspicuity reception</th><td>868&nbsp;MHz receiver fitted for FLARM, OGN, PilotAware, FANET and ADS-L <span class="badge">in development</span></td></tr>
       <tr><th>Transmission</th><td>None. Receive only.</td></tr>
-      <tr><th>Position</th><td>Multi-constellation GNSS with 1&nbsp;PPS timing</td></tr>
+      <tr><th>Position</th><td>Multi-constellation GNSS &mdash; GPS, GLONASS and Galileo</td></tr>
       <tr><th>Altitude</th><td>Barometric pressure altitude, 25&nbsp;ft resolution</td></tr>
       <tr><th>Output</th><td>GDL90 over WiFi (UDP&nbsp;4000) &mdash; ownship, traffic and heartbeat</td></tr>
       <tr><th>Network</th><td>Hosts its own access point, or joins an existing network</td></tr>
@@ -340,5 +394,40 @@
 </footer>
 
 <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+
+<script>
+  // The release manifest is the single source of truth for what "latest"
+  // means: the installer button already flashes whatever it points at, so
+  // reading the version from the same file guarantees the number shown and the
+  // firmware installed can never disagree.
+  //
+  // no-store because Pages will happily serve a cached manifest for minutes
+  // after a release, which is exactly the moment someone is looking at it.
+  (function () {
+    var version = document.getElementById("rel-version");
+    var date = document.getElementById("rel-date");
+
+    fetch("./firmware/latest/manifest.json", { cache: "no-store" })
+      .then(function (response) {
+        if (!response.ok) throw new Error(response.status);
+        return response.json();
+      })
+      .then(function (manifest) {
+        if (!manifest.version) throw new Error("no version");
+        version.textContent = "v" + manifest.version;
+        if (manifest.release_date) {
+          date.textContent = "released " + manifest.release_date;
+        }
+      })
+      .catch(function () {
+        // No published release yet, or the fetch failed. Say so plainly rather
+        // than leaving "Checking..." on screen forever — the install button
+        // below would fail for the same reason, and an unexplained failure
+        // reads as a broken device rather than an unreleased one.
+        version.className = "v pending";
+        version.textContent = "No public release yet";
+      });
+  })();
+</script>
 </body>
 </html>
