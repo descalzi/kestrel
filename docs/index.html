@@ -1,15 +1,278 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="./images/kestrel-logo-birdie-transp.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Kestrel - Electronic conspicuity for General Aviation. See and be seen with ADS-B and OGNTP technology." />
-    <title>Kestrel - See and be seen</title>
-    <script type="module" crossorigin src="./assets/index-vPDtIVYB.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CBAL-t1B.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KestrelOne — See and be seen</title>
+<meta name="description" content="KestrelOne receives ADS-B traffic and sends it to your electronic flight bag over WiFi. Built for General Aviation.">
+<link rel="icon" type="image/png" href="./images/kestrel-logo-birdie-transp.png">
+
+<meta property="og:title" content="KestrelOne — See and be seen">
+<meta property="og:description" content="ADS-B traffic awareness for General Aviation, straight to your EFB.">
+<meta property="og:image" content="./images/kestrel-logo-birdie-transp.png">
+<meta property="og:type" content="website">
+
+<!--
+  Hand-written and self-contained: no build step, so this page can be edited
+  directly in the repository that serves it. The previous page was a compiled
+  React bundle whose source lived elsewhere, which meant it could not be
+  changed from here at all.
+
+  The one external dependency is ESP Web Tools, which is unavoidable — it is
+  what talks to the device over WebSerial.
+-->
+<style>
+  :root {
+    --bg:#0b1017; --panel:#141c27; --line:#243244;
+    --text:#e8eef6; --dim:#93a4b8;
+    --accent:#4ea8ff; --ok:#3fb950; --warn:#d29922;
+    --sky1:#0d1b2a; --sky2:#1b3a5c;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--bg); color:var(--text);
+    font:17px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a { color:var(--accent); }
+  .wrap { max-width:1060px; margin:0 auto; padding:0 1.25rem; }
+
+  header {
+    position:sticky; top:0; z-index:10; backdrop-filter:blur(10px);
+    background:rgba(11,16,23,.82); border-bottom:1px solid var(--line);
+  }
+  header .wrap { display:flex; align-items:center; gap:.7rem; padding-top:.6rem; padding-bottom:.6rem; }
+  header img { height:34px; }
+  header b { font-size:1.05rem; letter-spacing:.01em; }
+  header nav { margin-left:auto; display:flex; gap:1.2rem; font-size:.9rem; }
+  header nav a { color:var(--dim); text-decoration:none; }
+  header nav a:hover { color:var(--text); }
+
+  .hero {
+    background:linear-gradient(160deg,var(--sky1),var(--sky2));
+    border-bottom:1px solid var(--line); padding:3.5rem 0 3rem;
+  }
+  .hero .wrap { display:flex; align-items:center; gap:2.5rem; flex-wrap:wrap; }
+  .hero img { width:190px; flex:0 0 auto; filter:drop-shadow(0 8px 24px rgba(0,0,0,.45)); }
+  .hero-copy { flex:1 1 320px; }
+  .hero h1 { font-size:2.6rem; line-height:1.1; margin:0 0 .6rem; letter-spacing:-.02em; }
+  .hero .tag { font-size:1.15rem; color:#cfe2f7; margin:0 0 1.4rem; }
+  .cta { display:inline-block; background:var(--accent); color:#04121f; font-weight:650;
+         text-decoration:none; padding:.7rem 1.3rem; border-radius:8px; }
+  .cta.ghost { background:transparent; color:var(--text); border:1px solid var(--line); margin-left:.5rem; }
+
+  section { padding:3.2rem 0; border-bottom:1px solid var(--line); }
+  h2 { font-size:1.5rem; margin:0 0 .5rem; letter-spacing:-.01em; }
+  .lede { color:var(--dim); margin:0 0 2rem; max-width:60ch; }
+
+  .grid { display:grid; gap:1.1rem; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .card img { width:100%; height:150px; object-fit:cover; display:block; }
+  .card .body { padding:1rem 1.1rem 1.2rem; }
+  .card h3 { margin:0 0 .35rem; font-size:1rem; }
+  .card p { margin:0; color:var(--dim); font-size:.92rem; }
+  .badge {
+    display:inline-block; font-size:.68rem; letter-spacing:.06em; text-transform:uppercase;
+    padding:.12rem .45rem; border-radius:4px; border:1px solid var(--warn);
+    color:var(--warn); margin-left:.4rem; vertical-align:middle;
+  }
+
+  .install { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:1.6rem; }
+  .steps { counter-reset:s; list-style:none; padding:0; margin:0 0 1.4rem; }
+  .steps li { counter-increment:s; position:relative; padding-left:2.1rem; margin:.6rem 0; color:var(--dim); }
+  .steps li::before {
+    content:counter(s); position:absolute; left:0; top:.05rem;
+    width:1.5rem; height:1.5rem; border-radius:50%; background:var(--bg);
+    border:1px solid var(--line); color:var(--text);
+    font-size:.8rem; display:flex; align-items:center; justify-content:center;
+  }
+  .note { font-size:.86rem; color:var(--dim); margin-top:1rem; }
+  .unsupported { color:var(--warn); }
+  code { background:var(--bg); border:1px solid var(--line); border-radius:4px; padding:.05rem .35rem; font-size:.9em; }
+
+  table.spec { width:100%; border-collapse:collapse; font-size:.93rem; }
+  table.spec th, table.spec td { text-align:left; padding:.5rem .2rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  table.spec th { color:var(--dim); font-weight:600; width:34%; }
+
+  footer { padding:2rem 0 3rem; color:var(--dim); font-size:.88rem; }
+  .warn-box {
+    border:1px solid var(--warn); border-radius:10px; padding:1rem 1.1rem;
+    background:rgba(210,153,34,.07); font-size:.92rem; margin-top:2rem;
+  }
+  @media (max-width:640px) { .hero h1 { font-size:2rem; } .hero img { width:130px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <img src="./images/kestrel-logo-birdie-transp.png" alt="">
+    <b>KestrelOne</b>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#install">Install</a>
+      <a href="#specs">Specs</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <img src="./images/kestrel-logo-birdie-transp.png" alt="KestrelOne">
+    <div class="hero-copy">
+      <h1>See and be seen.</h1>
+      <p class="tag">
+        KestrelOne listens for nearby aircraft and puts them on the moving map you
+        already fly with. Battery powered, no installation, no subscription.
+      </p>
+      <a class="cta" href="#install">Install firmware</a>
+      <a class="cta ghost" href="#features">What it does</a>
+    </div>
+  </div>
+</div>
+
+<section id="features">
+  <div class="wrap">
+    <h2>What it does</h2>
+    <p class="lede">
+      A self-contained receiver for General Aviation. It hears the traffic around
+      you, works out where you are, and hands both to your electronic flight bag.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <img src="./images/features-adsb.jpg" alt="">
+        <div class="body">
+          <h3>ADS-B traffic</h3>
+          <p>
+            Receives and decodes 1090&nbsp;MHz Mode&nbsp;S and ADS-B, tracking position,
+            altitude, callsign and vertical rate for aircraft around you.
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="./images/features-efb.jpg" alt="">
+        <div class="body">
+          <h3>Straight to your EFB</h3>
+          <p>
+            Broadcasts GDL90 over its own WiFi network. SkyDemon and other flight
+            apps pick it up with no cables and nothing to configure.
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="./images/features-gps.jpg" alt="">
+        <div class="body">
+          <h3>Position and altitude</h3>
+          <p>
+            A built-in GNSS receiver and barometer give your own position and
+            pressure altitude, so traffic is shown relative to you.
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="./images/features-light.jpg" alt="">
+        <div class="body">
+          <h3>Battery powered</h3>
+          <p>
+            Runs from an internal cell with USB-C charging and a fuel gauge.
+            Nothing to wire into the aircraft.
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="./images/features-glider.jpg" alt="">
+        <div class="body">
+          <h3>868&nbsp;MHz conspicuity <span class="badge">in development</span></h3>
+          <p>
+            Hardware is fitted for FLARM, OGN, PilotAware and FANET reception.
+            The receiver is present; decoding is still being built.
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="./images/features-visib.jpg" alt="">
+        <div class="body">
+          <h3>Status at a glance</h3>
+          <p>
+            One status light answers "is it working?", and a built-in web page
+            shows traffic, signal quality and settings from any phone.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <h2>Install firmware</h2>
+    <p class="lede">
+      Firmware is installed straight from this page over USB &mdash; nothing to
+      download and no tools to set up.
+    </p>
+
+    <div class="install">
+      <ol class="steps">
+        <li>Connect KestrelOne to this computer with a USB-C cable.</li>
+        <li>Press <b>Install</b> and choose the KestrelOne serial port when asked.</li>
+        <li>Wait for it to finish, then reconnect to the <code>KestrelOne</code> WiFi network.</li>
+      </ol>
+
+      <esp-web-install-button manifest="./firmware/latest/manifest.json">
+        <button slot="activate" class="cta">Install</button>
+        <span slot="unsupported" class="unsupported">
+          This browser cannot talk to USB devices. Use Chrome or Edge on a desktop
+          computer &mdash; Safari and Firefox do not support it, and neither do phones or tablets.
+        </span>
+        <span slot="not-allowed" class="unsupported">
+          Serial access was blocked. This page must be opened over HTTPS.
+        </span>
+      </esp-web-install-button>
+
+      <p class="note">
+        Choosing <b>Erase device</b> during install clears saved settings and WiFi
+        credentials as well as the firmware. Leave it unticked to keep them.
+      </p>
+    </div>
+
+    <div class="warn-box">
+      <b>Advisory use only.</b> KestrelOne shows traffic that is broadcasting its
+      position. It cannot see aircraft that are not transmitting, and it is not a
+      collision avoidance system. It does not replace looking out of the window.
+    </div>
+  </div>
+</section>
+
+<section id="specs">
+  <div class="wrap">
+    <h2>Specifications</h2>
+    <table class="spec">
+      <tr><th>Traffic reception</th><td>1090&nbsp;MHz ADS-B and Mode&nbsp;S (DF17/18, DF11, DF0/4/5/16/20/21)</td></tr>
+      <tr><th>Conspicuity</th><td>868&nbsp;MHz receiver fitted &mdash; FLARM, OGN, PilotAware, FANET, ADS-L <span class="badge">in development</span></td></tr>
+      <tr><th>Position</th><td>Multi-constellation GNSS with 1&nbsp;PPS timing</td></tr>
+      <tr><th>Altitude</th><td>Barometric pressure altitude, 25&nbsp;ft resolution</td></tr>
+      <tr><th>Output</th><td>GDL90 over WiFi (UDP&nbsp;4000) &mdash; ownship, traffic and heartbeat</td></tr>
+      <tr><th>Network</th><td>Hosts its own access point, or joins an existing network</td></tr>
+      <tr><th>Power</th><td>Internal lithium cell, USB-C charging, battery gauge</td></tr>
+      <tr><th>Interface</th><td>Built-in web page for traffic, signal quality and settings</td></tr>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Kestrel Aviation &middot; KestrelOne is an experimental project and is not a
+    certified aviation device.
+  </div>
+</footer>
+
+<script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+</body>
 </html>
