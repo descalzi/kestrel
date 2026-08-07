@@ -94,6 +94,10 @@
   .hears { background:var(--panel); border-bottom:1px solid var(--line); padding:2.8rem 0; }
   .hears h2 { font-size:1.35rem; margin:0 0 .35rem; letter-spacing:-.015em; }
   .hears .lede { margin-bottom:1.6rem; }
+  .hears-diagram {
+    width:100%; max-width:640px; display:block; margin:0 auto 1.8rem;
+    border-radius:12px; border:1px solid var(--line); background:#f7f7f2;
+  }
   .proto { display:grid; gap:.9rem; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); }
   .proto div {
     border:1px solid var(--line); border-radius:10px; padding:.85rem 1rem;
@@ -157,7 +161,6 @@
     <img src="./images/kestrel-logo-birdie-transp.png" alt="">
     <b>KestrelOne</b>
     <nav>
-      <a href="#how">How it works</a>
       <a href="#features">Features</a>
       <a href="#install" class="keep">Install</a>
       <a href="#specs">Specs</a>
@@ -174,7 +177,7 @@
         map you already fly with.
       </p>
       <a class="cta" href="#install">Install firmware</a>
-      <a class="cta ghost" href="#how">How it works</a>
+      <a class="cta ghost" href="#features">What you get</a>
     </div>
     <img class="hero-mascot" src="./images/kestrel-logo-birdie-transp.png"
          alt="The KestrelOne kestrel, in a leather flying helmet, saluting">
@@ -188,6 +191,9 @@
       Airliners and ADS-B-equipped aircraft today, with the gliding and
       paragliding world arriving as the decoders are finished.
     </p>
+
+    <img class="hears-diagram" src="./images/diagram-signals.png"
+         alt="A light aircraft receiving signals from an airliner, a drone, a glider, a paraglider and another light aircraft">
 
     <div class="proto">
       <div>
@@ -225,65 +231,23 @@
   </div>
 </div>
 
-<section id="how">
-  <div class="wrap">
-    <h2 class="sec">How it works</h2>
-    <p class="lede">
-      Three things, in a box that fits in a flight bag and runs on its own battery.
-    </p>
-    <div class="flow">
-      <img src="./images/diagram-signals.png"
-           alt="Aircraft, an airliner, a drone, a glider and a paraglider all sending signals inward to a light aircraft">
-      <ol class="steps">
-        <li>
-          <b>Listens</b>
-          <span>Picks up 1090&nbsp;MHz ADS-B and Mode&nbsp;S from aircraft around you and
-          decodes position, altitude, callsign and climb rate.</span>
-        </li>
-        <li>
-          <b>Works out where you are</b>
-          <span>Its own GNSS receiver and barometer establish your position and
-          pressure altitude, so traffic is shown relative to you rather than in
-          the abstract.</span>
-        </li>
-        <li>
-          <b>Sends it to your tablet</b>
-          <span>Broadcasts GDL90 over its own WiFi network. SkyDemon and other
-          flight apps pick it up with no cables and nothing to configure.</span>
-        </li>
-      </ol>
-    </div>
-  </div>
-</section>
-
 <section id="features">
   <div class="wrap">
     <h2 class="sec">What you get</h2>
     <p class="lede">
-      No installation, no wiring, no subscription. Charge it, switch it on, connect
-      your tablet.
+      Charge it, switch it on, connect your tablet. No installation, no wiring,
+      no subscription.
     </p>
 
     <div class="grid">
       <div class="card">
-        <img src="./images/features-adsb.jpg" alt="">
-        <div class="body">
-          <h3>ADS-B and Mode&nbsp;S</h3>
-          <p>
-            Decodes aircraft broadcasting on 1090&nbsp;MHz. Those reporting a position
-            appear on the map; those heard without one are listed separately rather
-            than guessed at.
-          </p>
-        </div>
-      </div>
-
-      <div class="card">
         <img src="./images/features-efb.jpg" alt="">
         <div class="body">
-          <h3>Straight to your EFB</h3>
+          <h3>Traffic on the map you already use</h3>
           <p>
-            Standard GDL90 over WiFi, the same format commercial receivers use.
-            If your app takes traffic from a portable receiver, it will take this.
+            Standard GDL90 over its own WiFi network &mdash; the same format
+            commercial receivers use. SkyDemon and other flight apps pick it up
+            with no cables and nothing to configure.
           </p>
         </div>
       </div>
@@ -293,8 +257,9 @@
         <div class="body">
           <h3>Knows where you are</h3>
           <p>
-            Built-in GNSS and a barometer give your own position and pressure
-            altitude, so nearby traffic is shown as height above or below you.
+            Built-in satellite positioning and a barometer establish your own
+            position and pressure altitude, so nearby traffic is shown as height
+            above or below you rather than as a number to work out.
           </p>
         </div>
       </div>
@@ -302,33 +267,11 @@
       <div class="card">
         <img src="./images/features-light.jpg" alt="">
         <div class="body">
-          <h3>Grab and go</h3>
+          <h3>Grab it and go</h3>
           <p>
-            Internal battery with USB-C charging and a fuel gauge. Nothing to wire
-            into the aircraft, nothing to certify, moves between aircraft freely.
-          </p>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="./images/features-glider.jpg" alt="">
-        <div class="body">
-          <h3>Gliders and paragliders <span class="badge">in development</span></h3>
-          <p>
-            An 868&nbsp;MHz receiver is fitted for FLARM, OGN, PilotAware and FANET
-            &mdash; the traffic that never appears on ADS-B. The hardware is in every
-            unit; the decoding is still being written.
-          </p>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="./images/features-gps.jpg" alt="" style="object-position:center 30%">
-        <div class="body">
-          <h3>Tells you when it isn't working</h3>
-          <p>
-            One status light answers "is it working?" at a glance, and a built-in
-            web page shows traffic, signal quality and settings from any phone.
+            Runs from its own battery and charges over USB-C. Nothing wired into
+            the aircraft, nothing to certify, and it moves between aircraft as
+            easily as your headset.
           </p>
         </div>
       </div>
