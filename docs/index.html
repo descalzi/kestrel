@@ -7,10 +7,15 @@
 <meta name="description" content="KestrelOne is a portable receive-only ADS-B and Mode S traffic receiver for General Aviation. It sends GDL90 traffic over WiFi to SkyDemon, ForeFlight and other EFB apps.">
 <link rel="icon" type="image/png" href="./images/kestrel-logo-birdie-transp.png">
 
+<!-- Absolute URLs: scrapers do not resolve relative ones against the page. -->
 <meta property="og:title" content="KestrelOne — See what's out there">
 <meta property="og:description" content="A portable receive-only traffic receiver for General Aviation. Nearby aircraft, straight to SkyDemon or ForeFlight.">
-<meta property="og:image" content="./images/features-visib.jpg">
+<meta property="og:url" content="https://descalzi.github.io/kestrel/">
+<meta property="og:image" content="https://descalzi.github.io/kestrel/images/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 
 <!--
   Hand-written and self-contained so it can be edited in the repository that
@@ -54,35 +59,73 @@
   @media (max-width:520px) { header nav a:not(.keep) { display:none; } }
 
   /* ---------- hero ---------- */
-  .hero { position:relative; min-height:min(76vh,600px); display:flex; align-items:flex-end; }
-  .hero::before {
-    content:""; position:absolute; inset:0;
-    background:url("./images/features-visib.jpg") center/cover no-repeat;
-  }
-  .hero::after {
-    content:""; position:absolute; inset:0;
-    background:linear-gradient(to top,rgba(10,14,20,1) 4%,rgba(10,14,20,.72) 45%,rgba(10,14,20,.25) 100%);
+  /* No photograph here, deliberately. The one that used to sit behind this
+     copy was a formation shot -- one aircraft seen from another's cockpit --
+     which is a picture of BEING SEEN, the one claim this product cannot make.
+     It also needed an overlay heavy enough to crush most of it to black before
+     white text was readable on it.
+
+     The kestrel carries the hero instead, inside concentric range rings: the
+     visual language of a traffic display, and honest about what the device
+     does. The rings do not sweep. A rotating sweep is a picture of a radar
+     transmitting, and this receiver never transmits. */
+  .hero {
+    position:relative; overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 70% 35%, rgba(84,169,255,.10), transparent 62%),
+      linear-gradient(180deg,#0e151f 0%,#0a0e14 78%);
+    border-bottom:1px solid var(--line);
   }
   .hero .wrap {
-    position:relative; z-index:1; padding-bottom:3rem; padding-top:5rem;
-    display:flex; align-items:flex-end; gap:2rem;
+    position:relative; z-index:1;
+    display:flex; align-items:center; gap:2.5rem;
+    padding-top:4.2rem; padding-bottom:4.2rem;
   }
   .hero-copy { flex:1 1 auto; }
-  /* The mascot earns its place in the hero: the photograph carries the
-     message, the kestrel carries the personality. Sized to sit beside the
-     headline without competing with it, and dropped on narrow screens where
-     it would push the copy below the fold. */
-  .hero-mascot {
-    flex:0 0 auto; width:clamp(120px,17vw,210px); align-self:flex-end;
-    filter:drop-shadow(0 10px 30px rgba(0,0,0,.65));
-    margin-bottom:-.4rem;
-  }
-  @media (max-width:700px) { .hero-mascot { display:none; } }
   .hero h1 {
-    font-size:clamp(2.1rem,6vw,3.4rem); line-height:1.05;
-    margin:0 0 .7rem; letter-spacing:-.025em; text-shadow:0 2px 18px rgba(0,0,0,.6);
+    font-size:clamp(2.1rem,6vw,3.5rem); line-height:1.05;
+    margin:0 0 .8rem; letter-spacing:-.028em;
   }
-  .hero p { font-size:clamp(1rem,2.4vw,1.22rem); color:#d6e4f2; max-width:34ch; margin:0 0 1.6rem; }
+  .hero p { font-size:clamp(1rem,2.4vw,1.22rem); color:#c9dcee; max-width:36ch; margin:0 0 1.7rem; }
+
+  .hero-visual {
+    flex:0 0 auto; position:relative;
+    display:grid; place-items:center;
+    width:clamp(240px,34vw,420px); aspect-ratio:1;
+  }
+  /* Soft glow behind the bird, so it reads as lit rather than pasted on.
+     The transparent stop runs well past the element to avoid a visible disc
+     edge, which is what a tighter falloff produces on a dark background. */
+  .hero-visual::before {
+    content:""; position:absolute; inset:-14%; border-radius:50%;
+    background:radial-gradient(circle,rgba(84,169,255,.24) 0%,rgba(84,169,255,.07) 38%,transparent 66%);
+  }
+  /* Range rings. They extend well beyond the box on purpose: the bird fills
+     the middle, so rings drawn only inside it are simply hidden behind it.
+     Faded at both ends so they have no hard boundary at either edge. */
+  .hero-visual::after {
+    content:""; position:absolute; inset:-30%; border-radius:50%;
+    background:repeating-radial-gradient(circle at center,
+      transparent 0 8.4%, rgba(129,193,255,.30) 8.4%, rgba(129,193,255,.30) calc(8.4% + 1px));
+    -webkit-mask-image:radial-gradient(circle at center,transparent 26%,#000 42%,#000 60%,transparent 80%);
+            mask-image:radial-gradient(circle at center,transparent 26%,#000 42%,#000 60%,transparent 80%);
+  }
+  .hero-mascot {
+    position:relative; z-index:1; width:70%;
+    filter:drop-shadow(0 0 30px rgba(84,169,255,.30)) drop-shadow(0 18px 34px rgba(0,0,0,.55));
+  }
+
+  /* The mascot used to be hidden below 700px, which removed the brand on the
+     device most people will open this on. It stacks now instead. */
+  @media (max-width:780px) {
+    .hero .wrap {
+      flex-direction:column-reverse; align-items:center; text-align:center;
+      gap:.75rem; padding-top:2.6rem; padding-bottom:3rem;
+    }
+    .hero p { max-width:32ch; margin-left:auto; margin-right:auto; }
+    .hero-visual { width:min(64vw,270px); }
+  }
+
   .cta {
     display:inline-block; background:var(--accent); color:#04121f; font-weight:650;
     text-decoration:none; padding:.72rem 1.4rem; border-radius:8px; font-size:1rem;
@@ -206,8 +249,10 @@
       <a class="cta" href="#features">What you get</a>
       <a class="cta ghost" href="#firmware">Firmware</a>
     </div>
-    <img class="hero-mascot" src="./images/kestrel-logo-birdie-transp.png"
-         alt="The KestrelOne kestrel, in a leather flying helmet, saluting">
+    <div class="hero-visual">
+      <img class="hero-mascot" src="./images/kestrel-logo-birdie-transp.png"
+           alt="The KestrelOne kestrel, in a leather flying helmet, saluting">
+    </div>
   </div>
 </div>
 
