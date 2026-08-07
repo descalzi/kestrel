@@ -90,18 +90,19 @@
   }
   .cta.ghost { background:rgba(255,255,255,.07); color:var(--text); border:1px solid var(--line); margin-left:.45rem; }
 
-  /* ---------- the honest bit ---------- */
-  .truth { background:var(--panel); border-bottom:1px solid var(--line); padding:2.4rem 0; }
-  .truth .wrap { display:flex; gap:1.6rem; align-items:flex-start; flex-wrap:wrap; }
-  .truth .mark {
-    flex:0 0 auto; width:44px; height:44px; border-radius:10px;
-    border:1px solid var(--warn); color:var(--warn);
-    display:flex; align-items:center; justify-content:center; font-size:1.35rem;
+  /* ---------- what it hears ---------- */
+  .hears { background:var(--panel); border-bottom:1px solid var(--line); padding:2.8rem 0; }
+  .hears h2 { font-size:1.35rem; margin:0 0 .35rem; letter-spacing:-.015em; }
+  .hears .lede { margin-bottom:1.6rem; }
+  .proto { display:grid; gap:.9rem; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); }
+  .proto div {
+    border:1px solid var(--line); border-radius:10px; padding:.85rem 1rem;
+    background:var(--bg);
   }
-  .truth .body { flex:1 1 320px; }
-  .truth h2 { font-size:1.22rem; margin:.1rem 0 .5rem; }
-  .truth p { margin:0 0 .6rem; color:var(--dim); max-width:66ch; }
-  .truth strong { color:var(--text); font-weight:600; }
+  .proto b { display:block; font-size:.98rem; margin-bottom:.12rem; }
+  .proto span { color:var(--dim); font-size:.87rem; }
+  .proto .soon { border-style:dashed; }
+  .hears .foot { color:var(--dim); font-size:.9rem; margin:1.5rem 0 0; max-width:70ch; }
 
   /* ---------- sections ---------- */
   section { padding:3.6rem 0; border-bottom:1px solid var(--line); }
@@ -180,22 +181,47 @@
   </div>
 </div>
 
-<div class="truth">
+<div class="hears">
   <div class="wrap">
-    <div class="mark">&#8593;</div>
-    <div class="body">
-      <h2>It receives. It does not transmit.</h2>
-      <p>
-        KestrelOne shows you aircraft that are broadcasting their position.
-        <strong>It does not make you visible to anyone else</strong> &mdash; your
-        transponder does that, and nothing here changes it.
-      </p>
-      <p>
-        It also cannot see aircraft that transmit nothing at all, which on a quiet
-        afternoon is a good many of them. Treat it as another pair of eyes, never
-        as a reason to spend less time looking out of the window.
-      </p>
+    <h2>What it hears</h2>
+    <p class="lede">
+      Airliners and ADS-B-equipped aircraft today, with the gliding and
+      paragliding world arriving as the decoders are finished.
+    </p>
+
+    <div class="proto">
+      <div>
+        <b>ADS-B</b>
+        <span>Position, altitude, callsign and climb rate on 1090&nbsp;MHz</span>
+      </div>
+      <div>
+        <b>Mode&nbsp;S</b>
+        <span>Transponder replies from aircraft without ADS-B</span>
+      </div>
+      <div class="soon">
+        <b>FLARM &amp; OGN <span class="badge">soon</span></b>
+        <span>Gliders, tugs and the Open Glider Network</span>
+      </div>
+      <div class="soon">
+        <b>PilotAware <span class="badge">soon</span></b>
+        <span>The P3I network, widely flown in UK GA</span>
+      </div>
+      <div class="soon">
+        <b>FANET <span class="badge">soon</span></b>
+        <span>Paragliders and hang gliders</span>
+      </div>
+      <div class="soon">
+        <b>ADS-L <span class="badge">soon</span></b>
+        <span>The open EASA-backed standard</span>
+      </div>
     </div>
+
+    <p class="foot">
+      KestrelOne is a receiver, so it works alongside your transponder rather
+      than replacing it &mdash; that is still what makes you visible to others.
+      It shows what it can hear, which is never quite everything, so it belongs
+      beside a good lookout rather than instead of one.
+    </p>
   </div>
 </div>
 
