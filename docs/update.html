@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Update your KestrelOne — firmware over USB</title>
+<meta name="description" content="Update your KestrelOne receiver over USB, straight from the browser. Shows the latest firmware version, release notes and troubleshooting.">
+<link rel="icon" type="image/png" href="./images/kestrel-logo-birdie-transp.png">
+
+<meta property="og:title" content="Update your KestrelOne">
+<meta property="og:description" content="Firmware updates over USB, straight from the browser. Nothing to download.">
+<meta property="og:url" content="https://descalzi.github.io/kestrel/update.html">
+<meta property="og:image" content="https://descalzi.github.io/kestrel/images/og-card.png">
+<meta property="og:type" content="website">
+
+<!--
+  The firmware page, split out of index.html so it has room to grow: release
+  notes, troubleshooting and the board register all belong here rather than
+  wedged into a section of the marketing page.
+
+  Same rule as index.html applies to the copy: this device RECEIVES. Nothing
+  here should imply it makes an aircraft visible to anyone else.
+-->
+<link rel="stylesheet" href="./styles.css">
+<style>
+  /* Page-specific. Anything shared belongs in styles.css. */
+  .board-tools { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0 14px; }
+  .btn {
+    background:var(--panel); color:var(--text); border:1px solid var(--line);
+    border-radius:8px; padding:9px 14px; font:inherit; font-size:.92rem;
+    cursor:pointer;
+  }
+  .btn:hover { border-color:var(--accent); }
+  .btn.primary { background:var(--accent); border-color:var(--accent); color:#04121f; font-weight:600; }
+  .table-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  table.boards { width:100%; border-collapse:collapse; font-size:.9rem; min-width:620px; }
+  table.boards th, table.boards td {
+    text-align:left; padding:9px 10px; border-bottom:1px solid var(--line);
+    white-space:nowrap;
+  }
+  table.boards th { color:var(--dim); font-weight:600; font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; }
+  table.boards td.serial { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  table.boards td.note { white-space:normal; min-width:160px; }
+  table.boards input.note-input {
+    width:100%; background:transparent; border:1px solid transparent; color:var(--text);
+    font:inherit; font-size:.9rem; border-radius:6px; padding:4px 6px;
+  }
+  table.boards input.note-input:focus { border-color:var(--line); outline:none; background:var(--bg); }
+  .tag { border-radius:999px; padding:2px 9px; font-size:.78rem; font-weight:600; }
+  .tag.ok { background:rgba(76,192,114,.15); color:var(--ok); }
+  .tag.fail { background:rgba(224,169,74,.15); color:var(--warn); }
+  .tag.seen { background:rgba(84,169,255,.15); color:var(--accent); }
+  .empty { color:var(--dim); padding:16px 0; }
+  .privacy {
+    border-left:3px solid var(--line); padding:2px 0 2px 14px; margin:16px 0;
+    color:var(--dim); font-size:.9rem;
+  }
+  .capture-status { margin:10px 0 0; font-size:.92rem; color:var(--dim); min-height:1.3em; }
+  details.faq { border-top:1px solid var(--line); padding:14px 0; }
+  details.faq summary { cursor:pointer; font-weight:600; }
+  details.faq p { color:var(--dim); margin:10px 0 0; }
+  .del { color:var(--dim); cursor:pointer; border:0; background:none; font-size:1.05rem; padding:0 4px; }
+  .del:hover { color:var(--warn); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <img src="./images/kestrel-logo-birdie-transp.png" alt="">
+    <b>KestrelOne</b>
+    <nav>
+      <a href="./index.html">Home</a>
+      <a href="./index.html#features">Features</a>
+      <a href="./update.html" class="keep">Firmware</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2 class="sec">Firmware updates</h2>
+    <p class="lede">
+      KestrelOne updates over USB, straight from this page. Nothing to download
+      and no tools to install &mdash; your browser talks to the device directly.
+    </p>
+
+    <div class="install">
+      <div class="release">
+        <span class="k">Latest version</span>
+        <span class="v" id="rel-version">Checking&hellip;</span>
+        <span class="d" id="rel-date"></span>
+        <p class="hint">
+          Your device shows the version it is running on its own web page, under
+          <b>Status</b>. If they match, there is nothing to do.
+        </p>
+      </div>
+
+      <ol class="steps">
+        <li><b>Connect</b><span>Plug KestrelOne into this computer with a USB-C cable. It must be a data cable &mdash; a charge-only lead powers the device but the browser will not see it.</span></li>
+        <li><b>Update</b><span>Press the button below and choose the KestrelOne serial port.</span></li>
+        <li><b>Reconnect</b><span>When it finishes, join the <code>KestrelOne</code> WiFi network again from your phone or tablet. The default password is <code>kestrelone</code>.</span></li>
+      </ol>
+
+      <esp-web-install-button manifest="./firmware/latest/manifest.json">
+        <button slot="activate" class="cta">Update over USB</button>
+        <span slot="unsupported" class="unsupported">
+          This browser cannot talk to USB devices. Use Chrome or Edge on a desktop
+          computer &mdash; Safari and Firefox do not support it, and nor do phones or tablets.
+        </span>
+        <span slot="not-allowed" class="unsupported">
+          Serial access was blocked. This page must be opened over HTTPS.
+        </span>
+      </esp-web-install-button>
+
+      <p class="note">
+        An update keeps your settings and WiFi credentials. Ticking
+        <b>Erase device</b> wipes them and returns it to factory defaults.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 class="sec">Your boards</h2>
+    <p class="lede">
+      Every KestrelOne has a serial number burned into the chip &mdash; its MAC
+      address. After an update this page reads it back off the device and keeps
+      a note of what happened, so you can tell one unit from another.
+    </p>
+
+    <div class="board-tools">
+      <button class="btn primary" id="btn-read">Read a board</button>
+      <button class="btn" id="btn-export">Export JSON</button>
+      <button class="btn" id="btn-import">Import JSON</button>
+      <button class="btn" id="btn-csv">Copy as CSV</button>
+      <button class="btn" id="btn-clear">Clear all</button>
+      <input type="file" id="file-import" accept="application/json,.json" hidden>
+    </div>
+
+    <p class="capture-status" id="capture-status"></p>
+
+    <div class="table-scroll">
+      <table class="boards">
+        <thead>
+          <tr>
+            <th>Serial</th><th>Firmware</th><th>Last action</th>
+            <th>When</th><th>Note</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="board-rows"></tbody>
+      </table>
+    </div>
+    <p class="empty" id="board-empty">
+      No boards recorded yet. Update a device, or press <b>Read a board</b> to
+      identify one without changing anything.
+    </p>
+
+    <p class="privacy">
+      This list is stored in this browser only. Nothing is uploaded and there is
+      no account &mdash; which also means it does not follow you to another
+      computer. Use <b>Export JSON</b> if you want to keep it somewhere or move
+      it, and note that clearing your browser data will delete it.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 class="sec">If something goes wrong</h2>
+
+    <details class="faq">
+      <summary>The browser does not list any serial port</summary>
+      <p>
+        Almost always the cable. Many USB-C leads carry power only; the device
+        will light up but never appear to the computer. Try a different cable
+        before anything else. If it still does not appear, unplug it, wait a few
+        seconds and plug it back in.
+      </p>
+    </details>
+
+    <details class="faq">
+      <summary>The update failed part-way through</summary>
+      <p>
+        Nothing is broken. The device keeps its previous firmware until a new
+        one is written completely, and an interrupted write can simply be run
+        again. Unplug it, plug it back in, and press Update once more.
+      </p>
+    </details>
+
+    <details class="faq">
+      <summary>It updated, but my EFB no longer sees traffic</summary>
+      <p>
+        Rejoin the <code>KestrelOne</code> WiFi network from your tablet &mdash;
+        phones and tablets usually drop back to a remembered network while the
+        device restarts. Then check the device's own page under <b>Status</b>
+        that it is receiving.
+      </p>
+    </details>
+
+    <details class="faq">
+      <summary>Can I go back to an older version?</summary>
+      <p>
+        Yes, though this page only ever offers the latest. Older releases are
+        kept and can be flashed with the same tool if you need one; get in touch
+        rather than guessing, so we can work out what went wrong with the new
+        one.
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    KestrelOne is a receive-only device. It shows you nearby aircraft; it does
+    not transmit and does not make you visible to anyone else.
+  </div>
+</footer>
+
+<script type="module" src="./vendor/esp-web-tools/install-button.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  // ---- latest release -----------------------------------------------------
+  //
+  // The manifest is the single source of truth for what "latest" means: the
+  // installer flashes whatever it points at, so reading the version from the
+  // same file means the number shown and the firmware installed cannot
+  // disagree. no-store because Pages will serve a cached manifest for minutes
+  // after a release, which is exactly when someone is looking at it.
+  var relVersion = document.getElementById("rel-version");
+  var relDate = document.getElementById("rel-date");
+  var latestVersion = null;
+
+  fetch("./firmware/latest/manifest.json", { cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (m) {
+      if (!m.version) throw new Error("no version");
+      latestVersion = m.version;
+      relVersion.textContent = "v" + m.version;
+      if (m.release_date) relDate.textContent = "released " + m.release_date;
+    })
+    .catch(function () {
+      relVersion.className = "v pending";
+      relVersion.textContent = "No public release yet";
+    });
+
+  // ---- board register -----------------------------------------------------
+  //
+  // Stored in localStorage, deliberately. The site is static with no backend,
+  // so the honest options were "in this browser" or "not at all"; anything
+  // central would need a server and an account, which this does not warrant.
+  var KEY = "kestrel.boards.v1";
+  var rows = document.getElementById("board-rows");
+  var empty = document.getElementById("board-empty");
+  var status = document.getElementById("capture-status");
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || []; }
+    catch (e) { return []; }
+  }
+  function save(list) {
+    try { localStorage.setItem(KEY, JSON.stringify(list)); }
+    catch (e) { say("Could not save — browser storage is full or blocked."); }
+  }
+  function say(msg) { status.textContent = msg || ""; }
+
+  function record(serial, fw, action) {
+    if (!serial) return;
+    var list = load();
+    var row = null;
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].serial === serial) { row = list[i]; break; }
+    }
+    if (!row) { row = { serial: serial, note: "" }; list.unshift(row); }
+    if (fw) row.fw = fw;
+    row.action = action;
+    row.at = new Date().toISOString();
+    save(list);
+    render();
+  }
+
+  function render() {
+    var list = load();
+    rows.innerHTML = "";
+    empty.style.display = list.length ? "none" : "block";
+
+    list.forEach(function (b, index) {
+      var tr = document.createElement("tr");
+
+      var td = document.createElement("td");
+      td.className = "serial";
+      td.textContent = b.serial;
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      td.textContent = b.fw || "—";
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      var cls = b.action === "updated" ? "ok" : (b.action === "failed" ? "fail" : "seen");
+      var tag = document.createElement("span");
+      tag.className = "tag " + cls;
+      tag.textContent = b.action || "seen";
+      td.appendChild(tag);
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      td.textContent = b.at ? new Date(b.at).toLocaleString() : "—";
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      td.className = "note";
+      var input = document.createElement("input");
+      input.className = "note-input";
+      input.value = b.note || "";
+      input.placeholder = "where it went…";
+      input.addEventListener("change", function () {
+        var l = load();
+        if (l[index]) { l[index].note = input.value; save(l); }
+      });
+      td.appendChild(input);
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      var del = document.createElement("button");
+      del.className = "del";
+      del.title = "Remove from this list";
+      del.textContent = "×";
+      del.addEventListener("click", function () {
+        var l = load();
+        l.splice(index, 1);
+        save(l);
+        render();
+      });
+      td.appendChild(del);
+      tr.appendChild(td);
+
+      rows.appendChild(tr);
+    });
+  }
+
+  // ---- reading the serial off the device -----------------------------------
+  //
+  // esp-web-tools does read the MAC, but only writes it to its own log — there
+  // is no supported way to get it out. So the board identifies itself instead:
+  // it prints "Serial   : <mac>" on its boot banner, which is more reliable
+  // anyway, because reading it proves the device actually came back up after
+  // the update rather than merely that bytes were written.
+  var RE_SERIAL = /Serial\s*:\s*([0-9A-Fa-f]{2}(?::[0-9A-Fa-f]{2}){5})/;
+  var RE_FW = /Firmware\s*:\s*(\S+)/;
+
+  function supported() {
+    return typeof navigator !== "undefined" && !!navigator.serial;
+  }
+
+  // Reads the banner from an already-permitted port. The device prints it
+  // about a second after reset, so this waits, then gives up rather than
+  // hanging: a board that never prints is a result too.
+  function readBanner(port, timeoutMs) {
+    return new Promise(function (resolve) {
+      var text = "";
+      var reader = null;
+      var done = false;
+
+      function finish(result) {
+        if (done) return;
+        done = true;
+        if (reader) { try { reader.cancel(); } catch (e) {} }
+        resolve(result);
+      }
+
+      setTimeout(function () { finish(parse(text)); }, timeoutMs);
+
+      port.open({ baudRate: 115200 }).then(function () {
+        var decoder = new TextDecoder();
+        reader = port.readable.getReader();
+        function pump() {
+          reader.read().then(function (r) {
+            if (r.done) { finish(parse(text)); return; }
+            text += decoder.decode(r.value, { stream: true });
+            var hit = parse(text);
+            if (hit.serial) { finish(hit); return; }
+            pump();
+          }).catch(function () { finish(parse(text)); });
+        }
+        pump();
+      }).catch(function () {
+        // Usually means the flasher still holds the port.
+        finish({ serial: null, fw: null, busy: true });
+      });
+    });
+  }
+
+  function parse(text) {
+    var s = RE_SERIAL.exec(text);
+    var f = RE_FW.exec(text);
+    return { serial: s ? s[1].toUpperCase() : null, fw: f ? f[1] : null };
+  }
+
+  function closeQuietly(port) {
+    try { port.close(); } catch (e) {}
+  }
+
+  // Tries each port the user has already granted, newest first.
+  function identify(action, attemptsLeft) {
+    if (!supported()) { say("This browser cannot read the serial port."); return; }
+    navigator.serial.getPorts().then(function (ports) {
+      if (!ports.length) {
+        say("No device authorised yet — press Read a board and pick the port.");
+        return;
+      }
+      var port = ports[ports.length - 1];
+      say("Reading the board…");
+      readBanner(port, 12000).then(function (info) {
+        closeQuietly(port);
+        if (info.serial) {
+          record(info.serial, info.fw, action);
+          say("Recorded " + info.serial + (info.fw ? " on " + info.fw : "") + ".");
+        } else if (info.busy && attemptsLeft > 0) {
+          setTimeout(function () { identify(action, attemptsLeft - 1); }, 2000);
+        } else {
+          say("Could not read the serial. Unplug the device, plug it back in, "
+              + "then press Read a board.");
+        }
+      });
+    });
+  }
+
+  document.getElementById("btn-read").addEventListener("click", function () {
+    if (!supported()) { say("This browser cannot talk to USB devices."); return; }
+    // Ask for a port explicitly, then read it. Pressing reset on the device is
+    // not required: the banner is reprinted on every boot, and the device is
+    // reset by opening the port on most adapters.
+    navigator.serial.requestPort().then(function () {
+      identify("seen", 2);
+    }).catch(function () { say(""); });
+  });
+
+  // The installer reports "finished" or "error"; either is worth recording,
+  // because a board that failed to take an update is exactly the one you want
+  // to be able to find again later.
+  var installer = document.querySelector("esp-web-install-button");
+  if (installer) {
+    installer.addEventListener("state-changed", function (ev) {
+      var st = ev.detail && ev.detail.state;
+      if (st === "finished") {
+        say("Update finished — reading the board's serial…");
+        setTimeout(function () { identify("updated", 3); }, 2500);
+      } else if (st === "error") {
+        say("Update failed — reading the board's serial so it can be noted…");
+        setTimeout(function () { identify("failed", 3); }, 1500);
+      }
+    });
+  }
+
+  // ---- export / import -----------------------------------------------------
+  function download(name, text, type) {
+    var blob = new Blob([text], { type: type });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+
+  document.getElementById("btn-export").addEventListener("click", function () {
+    download("kestrel-boards.json", JSON.stringify(load(), null, 2), "application/json");
+  });
+
+  document.getElementById("btn-csv").addEventListener("click", function () {
+    var lines = ["serial,firmware,action,when,note"];
+    load().forEach(function (b) {
+      lines.push([b.serial, b.fw || "", b.action || "", b.at || "",
+                  '"' + String(b.note || "").replace(/"/g, '""') + '"'].join(","));
+    });
+    var csv = lines.join("\n");
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(csv).then(function () { say("CSV copied to the clipboard."); },
+                                             function () { download("kestrel-boards.csv", csv, "text/csv"); });
+    } else {
+      download("kestrel-boards.csv", csv, "text/csv");
+    }
+  });
+
+  var fileInput = document.getElementById("file-import");
+  document.getElementById("btn-import").addEventListener("click", function () { fileInput.click(); });
+  fileInput.addEventListener("change", function () {
+    var file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+    file.text().then(function (text) {
+      var incoming;
+      try { incoming = JSON.parse(text); } catch (e) { say("That file is not valid JSON."); return; }
+      if (!Array.isArray(incoming)) { say("That file is not a board list."); return; }
+      // Merge rather than replace: importing a colleague's list should not
+      // silently discard your own.
+      var list = load();
+      var bySerial = {};
+      list.forEach(function (b) { bySerial[b.serial] = b; });
+      var added = 0;
+      incoming.forEach(function (b) {
+        if (!b || !b.serial) return;
+        if (bySerial[b.serial]) {
+          var kept = bySerial[b.serial];
+          if (b.at && (!kept.at || b.at > kept.at)) {
+            kept.fw = b.fw || kept.fw;
+            kept.action = b.action || kept.action;
+            kept.at = b.at;
+          }
+          if (!kept.note && b.note) kept.note = b.note;
+        } else {
+          list.push({ serial: b.serial, fw: b.fw, action: b.action, at: b.at, note: b.note || "" });
+          added++;
+        }
+      });
+      save(list);
+      render();
+      say("Imported — " + added + " new, " + (incoming.length - added) + " already known.");
+      fileInput.value = "";
+    });
+  });
+
+  document.getElementById("btn-clear").addEventListener("click", function () {
+    if (!load().length) return;
+    if (!confirm("Remove every board from this list? Export first if you want to keep it.")) return;
+    save([]);
+    render();
+    say("List cleared.");
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

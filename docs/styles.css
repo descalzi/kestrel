@@ -1,0 +1,200 @@
+/* KestrelOne public site — shared styles.
+
+   Extracted from index.html when the firmware page moved to update.html.
+   Two hand-edited copies of this would have drifted within a release, and the
+   update page is the one expected to grow. Still self-contained: a same-origin
+   stylesheet, no CDN, nothing external to fetch.
+*/
+  :root {
+    --bg:#0a0e14; --panel:#131a24; --line:#232f3e;
+    --text:#eaf1f8; --dim:#8fa3b8; --accent:#54a9ff;
+    --warn:#e0a94a; --ok:#4cc072;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--bg); color:var(--text);
+    font:17px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a { color:var(--accent); }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+
+  /* ---------- header ---------- */
+  header {
+    position:sticky; top:0; z-index:20;
+    background:rgba(10,14,20,.85); backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  header .wrap { display:flex; align-items:center; gap:.65rem; padding:.55rem 1.25rem; }
+  header img { height:32px; }
+  header b { font-size:1.02rem; letter-spacing:.005em; }
+  header nav { margin-left:auto; display:flex; gap:1.3rem; font-size:.88rem; }
+  header nav a { color:var(--dim); text-decoration:none; }
+  header nav a:hover { color:var(--text); }
+  @media (max-width:520px) { header nav a:not(.keep) { display:none; } }
+
+  /* ---------- hero ---------- */
+  /* No photograph here, deliberately. The one that used to sit behind this
+     copy was a formation shot -- one aircraft seen from another's cockpit --
+     which is a picture of BEING SEEN, the one claim this product cannot make.
+     It also needed an overlay heavy enough to crush most of it to black before
+     white text was readable on it.
+
+     The kestrel carries the hero instead, inside concentric range rings: the
+     visual language of a traffic display, and honest about what the device
+     does. The rings do not sweep. A rotating sweep is a picture of a radar
+     transmitting, and this receiver never transmits. */
+  .hero {
+    position:relative; overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 70% 35%, rgba(84,169,255,.10), transparent 62%),
+      linear-gradient(180deg,#0e151f 0%,#0a0e14 78%);
+    border-bottom:1px solid var(--line);
+  }
+  .hero .wrap {
+    position:relative; z-index:1;
+    display:flex; align-items:center; gap:2.5rem;
+    padding-top:4.2rem; padding-bottom:4.2rem;
+  }
+  .hero-copy { flex:1 1 auto; }
+  .hero h1 {
+    font-size:clamp(2.1rem,6vw,3.5rem); line-height:1.05;
+    margin:0 0 .8rem; letter-spacing:-.028em;
+  }
+  .hero p { font-size:clamp(1rem,2.4vw,1.22rem); color:#c9dcee; max-width:36ch; margin:0 0 1.7rem; }
+
+  .hero-visual {
+    flex:0 0 auto; position:relative;
+    display:grid; place-items:center;
+    width:clamp(240px,34vw,420px); aspect-ratio:1;
+  }
+  /* Soft glow behind the bird, so it reads as lit rather than pasted on.
+     The transparent stop runs well past the element to avoid a visible disc
+     edge, which is what a tighter falloff produces on a dark background. */
+  .hero-visual::before {
+    content:""; position:absolute; inset:-14%; border-radius:50%;
+    background:radial-gradient(circle,rgba(84,169,255,.24) 0%,rgba(84,169,255,.07) 38%,transparent 66%);
+  }
+  /* Range rings. They extend well beyond the box on purpose: the bird fills
+     the middle, so rings drawn only inside it are simply hidden behind it.
+     Faded at both ends so they have no hard boundary at either edge. */
+  .hero-visual::after {
+    content:""; position:absolute; inset:-30%; border-radius:50%;
+    background:repeating-radial-gradient(circle at center,
+      transparent 0 8.4%, rgba(129,193,255,.30) 8.4%, rgba(129,193,255,.30) calc(8.4% + 1px));
+    -webkit-mask-image:radial-gradient(circle at center,transparent 26%,#000 42%,#000 60%,transparent 80%);
+            mask-image:radial-gradient(circle at center,transparent 26%,#000 42%,#000 60%,transparent 80%);
+  }
+  .hero-mascot {
+    position:relative; z-index:1; width:70%;
+    filter:drop-shadow(0 0 30px rgba(84,169,255,.30)) drop-shadow(0 18px 34px rgba(0,0,0,.55));
+  }
+
+  /* The mascot used to be hidden below 700px, which removed the brand on the
+     device most people will open this on. It stacks now instead. */
+  @media (max-width:780px) {
+    .hero .wrap {
+      flex-direction:column-reverse; align-items:center; text-align:center;
+      gap:.75rem; padding-top:2.6rem; padding-bottom:3rem;
+    }
+    .hero p { max-width:32ch; margin-left:auto; margin-right:auto; }
+    .hero-visual { width:min(64vw,270px); }
+  }
+
+  .cta {
+    display:inline-block; background:var(--accent); color:#04121f; font-weight:650;
+    text-decoration:none; padding:.72rem 1.4rem; border-radius:8px; font-size:1rem;
+  }
+  .cta.ghost { background:rgba(255,255,255,.07); color:var(--text); border:1px solid var(--line); margin-left:.45rem; }
+
+  /* ---------- sections ---------- */
+  section { padding:3.6rem 0; border-bottom:1px solid var(--line); }
+  h2.sec { font-size:1.6rem; margin:0 0 .45rem; letter-spacing:-.015em; }
+  .lede { color:var(--dim); margin:0 0 2.2rem; max-width:62ch; }
+
+  /* ---------- what it hears ---------- */
+  /* Diagram and protocol list are two halves of one statement, so they sit
+     side by side and share a baseline rather than the diagram floating above
+     a detached grid of boxes. */
+  .hears { background:var(--panel); }
+  .hears-split { display:grid; gap:2.2rem; grid-template-columns:1fr; align-items:center; }
+  @media (min-width:900px) {
+    .hears-split { grid-template-columns:minmax(0,1.02fr) minmax(0,1fr); gap:3rem; }
+  }
+  .hears-figure { margin:0; }
+  .hears-figure img {
+    width:100%; display:block; border-radius:12px;
+    border:1px solid var(--line); background:#f7f7f2;
+  }
+  .hears-figure figcaption {
+    color:var(--dim); font-size:.85rem; line-height:1.5;
+    margin-top:.75rem; text-align:center;
+  }
+
+  .proto { list-style:none; margin:0; padding:0; }
+  .proto li {
+    display:grid; grid-template-columns:auto 1fr; gap:.05rem .85rem;
+    padding:.78rem 0; border-bottom:1px solid var(--line);
+  }
+  .proto li:first-child { padding-top:0; }
+  .proto li:last-child { border-bottom:0; padding-bottom:0; }
+  /* A filled pip means the decoder is done and flying; a hollow one means it
+     is not. Colour alone would not carry that, hence the shape difference. */
+  .proto .pip {
+    grid-row:1 / 3; width:.6rem; height:.6rem; border-radius:50%;
+    margin-top:.52rem; background:var(--ok);
+    box-shadow:0 0 0 3.5px rgba(76,192,114,.15);
+  }
+  .proto .soon .pip { background:transparent; border:1.5px solid #4a5b6e; box-shadow:none; }
+  .proto b { font-size:.99rem; font-weight:650; }
+  .proto .soon b { color:#b9c8d8; }
+  .proto .desc { color:var(--dim); font-size:.88rem; line-height:1.55; }
+  .hears .foot { color:var(--dim); font-size:.9rem; margin:2.2rem 0 0; max-width:74ch; }
+
+  .grid { display:grid; gap:1.15rem; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .card img { width:100%; height:156px; object-fit:cover; display:block; }
+  .card .body { padding:1.05rem 1.15rem 1.25rem; }
+  .card h3 { margin:0 0 .35rem; font-size:1.02rem; }
+  .card p { margin:0; color:var(--dim); font-size:.92rem; }
+  .badge {
+    display:inline-block; font-size:.65rem; letter-spacing:.07em; text-transform:uppercase;
+    padding:.1rem .42rem; border-radius:4px; border:1px solid var(--warn);
+    color:var(--warn); margin-left:.35rem; vertical-align:middle; font-weight:600;
+  }
+
+  /* ---------- firmware ---------- */
+  .install { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:1.7rem; }
+  .steps { counter-reset:s; list-style:none; padding:0; margin:0; }
+  .steps li { counter-increment:s; position:relative; padding-left:2.6rem; margin:0 0 .75rem; }
+  .steps li::before {
+    content:counter(s); position:absolute; left:0; top:0;
+    width:1.85rem; height:1.85rem; border-radius:50%;
+    background:var(--bg); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:.85rem; color:var(--accent);
+  }
+  .steps b { display:block; margin-bottom:.1rem; }
+  .steps span { color:var(--dim); font-size:.94rem; }
+
+  .release {
+    display:flex; flex-wrap:wrap; align-items:baseline; gap:.35rem .9rem;
+    background:var(--bg); border:1px solid var(--line); border-radius:10px;
+    padding:.95rem 1.15rem; margin:0 0 1.6rem;
+  }
+  .release .k { font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; color:var(--dim); }
+  .release .v { font-size:1.2rem; font-weight:650; letter-spacing:-.01em; }
+  .release .v.pending { font-size:1rem; font-weight:400; color:var(--dim); }
+  .release .d { color:var(--dim); font-size:.88rem; }
+  .release .hint { flex-basis:100%; color:var(--dim); font-size:.86rem; margin:.2rem 0 0; }
+
+  .unsupported { color:var(--warn); display:block; margin-top:.4rem; font-size:.92rem; }
+  .note { font-size:.88rem; color:var(--dim); margin:1.1rem 0 0; }
+  code { background:var(--bg); border:1px solid var(--line); border-radius:4px; padding:.05rem .35rem; font-size:.9em; }
+
+  table.spec { width:100%; border-collapse:collapse; font-size:.94rem; }
+  table.spec th, table.spec td { text-align:left; padding:.62rem .2rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  table.spec th { color:var(--dim); font-weight:600; width:32%; }
+
+  footer { padding:2.4rem 0 3.4rem; color:var(--dim); font-size:.87rem; }
+  footer img { height:40px; vertical-align:middle; margin-right:.6rem; opacity:.85; }
