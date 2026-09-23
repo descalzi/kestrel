@@ -1,45 +1,22 @@
-# Feature Card Images
+# Site images
 
-Place your feature card background images in this directory with the following names:
+| File | Used for |
+|---|---|
+| `kestrel-logo-birdie-transp.png` | Master mascot artwork. Source for everything below; not referenced by the pages. |
+| `kestrel-mascot.webp` | Hero, home page |
+| `kestrel-mark.png` | Header and footer mark (mascot head, 96 px) |
+| `favicon-32.png`, `apple-touch-icon.png` | Browser tab and iOS home-screen icons |
+| `diagram-signals.webp` | "What it hears" diagram |
+| `features-efb.webp`, `features-position.webp`, `features-light.webp` | "What you get" cards, 16:9 |
+| `og-card.png` | Link preview, 1200 x 630. Rendered from HTML, not generated. |
 
-## Required Images
+Rules for new images:
 
-1. **adsb-reception.jpg**
-   - Shows ADS-B signal visualization or radar display
-   - Recommended size: 800x600px or larger
-   - Should convey receiving/monitoring aircraft traffic
-
-2. **ogntp-compatible.jpg**
-   - OGNTP network coverage map or glider tracking visualization
-   - Recommended size: 800x600px or larger
-   - Should show network connectivity or tracking capability
-
-3. **enhanced-visibility.jpg**
-   - Cockpit view showing traffic display or aircraft visibility
-   - Recommended size: 800x600px or larger
-   - Should demonstrate the "see and be seen" concept
-
-4. **lightweight-portable.jpg**
-   - Product photo showing size, portability, or installation
-   - Recommended size: 800x600px or larger
-   - Should highlight compact design
-
-5. **mobile-integration.jpg**
-   - Screenshot of mobile app integration or tablet in cockpit
-   - Recommended size: 800x600px or larger
-   - Should show EFB apps or flight planning software integration
-
-6. **open-architecture.jpg**
-   - Technical diagram, circuit board, or architecture overview
-   - Recommended size: 800x600px or larger
-   - Should convey technical/open-source nature
-
-## Image Guidelines
-
-- **Format**: JPG, PNG, or WebP
-- **Aspect Ratio**: 4:3 or 16:9 works well
-- **Resolution**: At least 800px wide for good quality
-- **File Size**: Keep under 500KB each for fast loading
-- **Content**: Images should be relevant to aviation and the feature they represent
-- The images will have a dark overlay applied, so brighter images work better
-- Text on the card will appear in white/cyan, so avoid images with too much bright text
+- **Receive-only.** Nothing that shows the device, or the pilot's aircraft,
+  transmitting or being seen: no radar sweeps, no signal waves radiating from
+  the ownship, no formation shots. Arrows in diagrams point inward only.
+- **One look.** Photos: natural light, muted grade, deep navy shadows. Diagrams:
+  flat white line art on `#0A0E14` with `#54A9FF` accents.
+- **No readable text** in generated images; it comes out garbled.
+- **No fake product shots.** When the enclosure exists, photograph the real one.
+- Card images are cropped to 16:9 and saved as WebP around 960 px wide.

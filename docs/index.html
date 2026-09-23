@@ -3,13 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KestrelOne — ADS-B traffic for SkyDemon and ForeFlight</title>
-<meta name="description" content="KestrelOne is a portable receive-only ADS-B and Mode S traffic receiver for General Aviation. It sends GDL90 traffic over WiFi to SkyDemon, ForeFlight and other EFB apps.">
-<link rel="icon" type="image/png" href="./images/kestrel-logo-birdie-transp.png">
+<title>KestrelOne — ADS-B and PilotAware traffic for SkyDemon and ForeFlight</title>
+<meta name="description" content="KestrelOne is a portable traffic receiver for General Aviation. It picks up ADS-B and PilotAware aircraft and sends them over WiFi to SkyDemon, ForeFlight and other GDL90 apps. It never transmits.">
+<meta name="theme-color" content="#0a0e14">
+<link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32.png">
+<link rel="apple-touch-icon" href="./images/apple-touch-icon.png">
 
 <!-- Absolute URLs: scrapers do not resolve relative ones against the page. -->
 <meta property="og:title" content="KestrelOne — See what's out there">
-<meta property="og:description" content="A portable receive-only traffic receiver for General Aviation. Nearby aircraft, straight to SkyDemon or ForeFlight.">
+<meta property="og:description" content="A portable traffic receiver for General Aviation. ADS-B and PilotAware aircraft, straight to SkyDemon or ForeFlight.">
 <meta property="og:url" content="https://descalzi.github.io/kestrel/">
 <meta property="og:image" content="https://descalzi.github.io/kestrel/images/og-card.png">
 <meta property="og:image:width" content="1200">
@@ -26,92 +28,115 @@
   standard electronic-conspicuity phrase and claims both halves — a pilot
   could reasonably have concluded it made them visible to others. It does not;
   their transponder does. Every claim here is limited to what the hardware
-  actually does.
+  actually does, and "What it hears" says which decoders are finished.
 -->
 <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
 
-<header>
+<header class="site-header">
   <div class="wrap">
-    <img src="./images/kestrel-logo-birdie-transp.png" alt="">
-    <b>KestrelOne</b>
+    <a class="brand" href="./">
+      <img src="./images/kestrel-mark.png" alt="" width="34" height="34">
+      <span>KestrelOne</span>
+    </a>
     <nav>
-      <a href="#features">Features</a>
-      <a href="./update.html" class="keep">Firmware</a>
+      <a href="#hears">What it hears</a>
+      <a href="#setup">Set up</a>
       <a href="#specs">Specs</a>
+      <a href="./update.html" class="nav-cta">Update firmware</a>
     </nav>
   </div>
 </header>
 
+<main>
 <div class="hero">
   <div class="wrap">
     <div class="hero-copy">
+      <p class="eyebrow">Portable traffic receiver</p>
       <h1>See what's out there.</h1>
-      <p>
+      <p class="hero-lede">
         KestrelOne picks up the aircraft around you and puts them on the moving
         map you already fly with.
       </p>
-      <a class="cta" href="#features">What you get</a>
-      <a class="cta ghost" href="./update.html">Firmware</a>
+      <div class="actions">
+        <a class="cta" href="#setup">Set up in 3 steps</a>
+        <a class="cta ghost" href="./update.html">Update firmware</a>
+      </div>
+      <ul class="facts">
+        <li>SkyDemon &amp; ForeFlight</li>
+        <li>ADS-B and PilotAware</li>
+        <li>10+ hour battery</li>
+      </ul>
     </div>
     <div class="hero-visual">
-      <img class="hero-mascot" src="./images/kestrel-logo-birdie-transp.png"
+      <img class="hero-mascot" src="./images/kestrel-mascot.webp" width="453" height="572"
            alt="The KestrelOne kestrel, in a leather flying helmet, saluting">
     </div>
   </div>
 </div>
 
-<section class="hears">
+<section id="hears" class="hears">
   <div class="wrap">
-    <h2 class="sec">What it hears</h2>
+    <p class="eyebrow">What it hears</p>
+    <h2 class="sec">Two receivers, listening at once.</h2>
     <p class="lede">
-      Airliners and ADS-B-equipped aircraft today, with the gliding and
-      paragliding world arriving as the decoders are finished.
+      1090&nbsp;MHz for transponders and ADS-B, and 868&nbsp;MHz for PilotAware
+      and the low-power networks flown by gliders and paragliders.
     </p>
 
     <div class="hears-split">
       <figure class="hears-figure">
-        <img src="./images/diagram-signals.png"
-             alt="A light aircraft receiving signals from an airliner, a drone, a glider, a paraglider and another light aircraft">
-        <figcaption>
-          Two receivers listening at once &mdash; 1090&nbsp;MHz for transponders
-          and ADS-B, 868&nbsp;MHz for the low-power conspicuity networks.
-        </figcaption>
+        <img src="./images/diagram-signals.webp" width="1200" height="670" loading="lazy"
+             alt="A light aircraft receiving signals from an airliner, another light aircraft, a glider and a paraglider">
       </figure>
 
-      <ul class="proto">
-        <li>
-          <i class="pip"></i>
-          <b>ADS-B</b>
-          <span class="desc">Position, altitude, callsign and climb rate on 1090&nbsp;MHz</span>
-        </li>
-        <li>
-          <i class="pip"></i>
-          <b>Mode&nbsp;S</b>
-          <span class="desc">Transponder replies from aircraft without ADS-B</span>
-        </li>
-        <li class="soon">
-          <i class="pip"></i>
-          <b>FLARM &amp; OGN <span class="badge">soon</span></b>
-          <span class="desc">Gliders, tugs and the Open Glider Network</span>
-        </li>
-        <li class="soon">
-          <i class="pip"></i>
-          <b>PilotAware <span class="badge">soon</span></b>
-          <span class="desc">The P3I network, widely flown in UK GA</span>
-        </li>
-        <li class="soon">
-          <i class="pip"></i>
-          <b>FANET <span class="badge">soon</span></b>
-          <span class="desc">Paragliders and hang gliders</span>
-        </li>
-        <li class="soon">
-          <i class="pip"></i>
-          <b>ADS-L <span class="badge">soon</span></b>
-          <span class="desc">The open EASA-backed standard</span>
-        </li>
-      </ul>
+      <!-- Grouped by what the pilot gets, not by radio band. Mode S has a
+           group of its own because its replies carry no position: it is
+           decoded, but it can never appear on a moving map. -->
+      <div class="proto">
+        <h3 class="proto-group">On your map today</h3>
+        <ul>
+          <li>
+            <i class="pip"></i>
+            <b>ADS-B</b>
+            <span class="desc">Position, altitude, callsign and climb rate from transponder-equipped aircraft, on 1090&nbsp;MHz</span>
+          </li>
+          <li>
+            <i class="pip"></i>
+            <b>PilotAware</b>
+            <span class="desc">The P3I network on 869.5&nbsp;MHz, widely flown in UK GA</span>
+          </li>
+        </ul>
+
+        <h3 class="proto-group">Heard, not plotted</h3>
+        <ul>
+          <li class="heard">
+            <i class="pip"></i>
+            <b>Mode&nbsp;S</b>
+            <span class="desc">Transponders without ADS-B. Their replies carry no position, so they cannot be placed on a map</span>
+          </li>
+        </ul>
+
+        <h3 class="proto-group">In development</h3>
+        <ul>
+          <li class="soon">
+            <i class="pip"></i>
+            <b>OGN</b>
+            <span class="desc">Gliders, tugs and the Open Glider Network</span>
+          </li>
+          <li class="soon">
+            <i class="pip"></i>
+            <b>FANET</b>
+            <span class="desc">Paragliders and hang gliders</span>
+          </li>
+          <li class="soon">
+            <i class="pip"></i>
+            <b>ADS-L</b>
+            <span class="desc">The open EASA-backed standard</span>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <p class="foot">
@@ -125,28 +150,25 @@
 
 <section id="features">
   <div class="wrap">
-    <h2 class="sec">What you get</h2>
-    <p class="lede">
-      Charge it, switch it on, connect your tablet. No installation, no wiring,
-      no subscription.
-    </p>
+    <p class="eyebrow">What you get</p>
+    <h2 class="sec">Built for the cockpit you already have.</h2>
+    <p class="lede">No installation, no wiring, no subscription.</p>
 
     <div class="grid">
       <div class="card">
-        <img src="./images/features-efb.jpg" alt="">
+        <img src="./images/features-efb.webp" width="960" height="536" loading="lazy" alt="">
         <div class="body">
           <h3>Straight to your EFB</h3>
           <p>
-            Traffic goes out as standard GDL90 over WiFi &mdash; the format
-            SkyDemon, ForeFlight and other flight apps already expect from a
-            traffic receiver. Join its network and the targets appear on the map
-            you were flying with anyway.
+            Traffic goes out as standard GDL90 over WiFi, the format SkyDemon,
+            ForeFlight and other flight apps take from a traffic receiver. The
+            targets appear on the map you were flying with anyway.
           </p>
         </div>
       </div>
 
       <div class="card">
-        <img src="./images/features-gps.jpg" alt="">
+        <img src="./images/features-position.webp" width="960" height="536" loading="lazy" alt="">
         <div class="body">
           <h3>Knows where you are</h3>
           <p>
@@ -159,13 +181,13 @@
       </div>
 
       <div class="card">
-        <img src="./images/features-light.jpg" alt="">
+        <img src="./images/features-light.webp" width="900" height="491" loading="lazy" alt="">
         <div class="body">
           <h3>Grab it and go</h3>
           <p>
-            Runs from its own battery and charges over USB-C. Nothing wired into
-            the aircraft, nothing to certify, and it moves between aircraft as
-            easily as your headset.
+            Runs for 10 hours and more on its own battery, and charges over
+            USB-C. Nothing wired into the aircraft, nothing to certify, and it
+            moves between aircraft as easily as your headset.
           </p>
         </div>
       </div>
@@ -173,32 +195,50 @@
   </div>
 </section>
 
-<section id="firmware">
+<section id="setup">
   <div class="wrap">
-    <h2 class="sec">Firmware updates</h2>
-    <p class="lede">
-      Your KestrelOne arrives ready to fly. When a new version is released it
-      updates straight from your browser over USB &mdash; nothing to download,
-      no tools to install.
+    <p class="eyebrow">Set up</p>
+    <h2 class="sec">Flying in three steps.</h2>
+    <p class="lede">Nothing to install on the tablet beyond the app you already use.</p>
+
+    <ol class="setup">
+      <li>
+        <b>Switch it on</b>
+        <span>Charge it over USB-C and switch it on. A view of the sky helps it
+        find your position.</span>
+      </li>
+      <li>
+        <b>Join its WiFi</b>
+        <span>On your tablet, join the <code>KestrelOne</code> network. The
+        password is <code>kestrelone</code>.</span>
+      </li>
+      <li>
+        <b>Start flying</b>
+        <span>In SkyDemon, choose <b>GDL90 Compatible Device</b> when you start
+        Flying mode. Other GDL90 apps listen on UDP port 4000; look in their
+        external-device settings.</span>
+      </li>
+    </ol>
+    <p class="note">
+      While you are on its network, the device's own page is at
+      <a href="http://192.168.4.1/">192.168.4.1</a>: live traffic, signal
+      quality, battery and settings.
     </p>
+  </div>
+</section>
 
-    <div class="install">
-      <div class="release">
-        <span class="k">Latest version</span>
-        <span class="v" id="rel-version">Checking&hellip;</span>
-        <span class="d" id="rel-date"></span>
-        <p class="hint">
-          Your device shows the version it is running on its own web page, under
-          <b>Status</b>. If they match, there is nothing to do.
-        </p>
-      </div>
-
-      <a class="cta" href="./update.html">Open the update page</a>
-
-      <p class="note">
-        An update keeps your settings and WiFi credentials. The update page has
-        the full instructions, the release notes and troubleshooting.
+<section id="firmware" class="band">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Firmware</p>
+      <p class="band-title">
+        Latest <span id="rel-version">&hellip;</span><span class="d" id="rel-date"></span>
       </p>
+      <p class="band-sub">Updates install from your browser over USB and keep your settings.</p>
+    </div>
+    <div class="actions">
+      <a class="cta" href="./update.html">Update firmware</a>
+      <a class="cta ghost" href="./update.html#whats-new">What's new</a>
     </div>
   </div>
 </section>
@@ -207,31 +247,38 @@
   <div class="wrap">
     <h2 class="sec">Specifications</h2>
     <table class="spec">
-      <tr><th>Traffic reception</th><td>1090&nbsp;MHz ADS-B and Mode&nbsp;S &mdash; extended squitter, all-call and surveillance replies</td></tr>
-      <tr><th>Conspicuity reception</th><td>868&nbsp;MHz receiver fitted for FLARM, OGN, PilotAware, FANET and ADS-L <span class="badge">in development</span></td></tr>
+      <tr><th>Traffic reception</th><td>1090&nbsp;MHz ADS-B and Mode&nbsp;S &mdash; extended squitter, all-call and surveillance replies. 869.5&nbsp;MHz PilotAware (P3I).</td></tr>
+      <tr><th>In development</th><td>OGN, FANET and ADS-L, on the same 868&nbsp;MHz receiver</td></tr>
       <tr><th>Transmission</th><td>None. Receive only.</td></tr>
       <tr><th>Position</th><td>Multi-constellation GNSS &mdash; GPS, GLONASS and Galileo</td></tr>
       <tr><th>Altitude</th><td>Barometric pressure altitude, 25&nbsp;ft resolution</td></tr>
-      <tr><th>Output</th><td>GDL90 over WiFi (UDP&nbsp;4000) &mdash; ownship, traffic and heartbeat</td></tr>
+      <tr><th>Output</th><td>GDL90 over WiFi (UDP&nbsp;4000) &mdash; ownship, traffic and heartbeat. Works with SkyDemon and ForeFlight.</td></tr>
       <tr><th>Network</th><td>Hosts its own access point (<code>KestrelOne</code>, password <code>kestrelone</code>), or joins an existing network</td></tr>
-      <tr><th>Power</th><td>Internal lithium cell, USB-C charging, battery gauge</td></tr>
-      <tr><th>Interface</th><td>Built-in web page for traffic, signal quality and settings</td></tr>
-      <tr><th>Updates</th><td>Installed from this page over USB</td></tr>
+      <tr><th>Power</th><td>Internal lithium cell, 10+ hours under load in testing. USB-C charging, battery gauge.</td></tr>
+      <tr><th>Interface</th><td>Built-in web page for traffic, signal quality and settings (192.168.4.1 on its own network)</td></tr>
+      <tr><th>Updates</th><td>From this site, in the browser, over USB</td></tr>
     </table>
   </div>
 </section>
+</main>
 
-<footer>
+<footer class="site-footer">
   <div class="wrap">
-    <img src="./images/kestrel-logo-birdie-transp.png" alt="">
-    Kestrel Aviation &middot; KestrelOne is an experimental project, not a certified
-    aviation device. Advisory use only.
+    <div class="foot-brand">
+      <img src="./images/kestrel-mark.png" alt="" width="40" height="40">
+      <div>
+        <b>KestrelOne</b>
+        <p>Kestrel Aviation. A portable traffic receiver that never transmits. Experimental, not a
+        certified aviation device: advisory use only.</p>
+      </div>
+    </div>
+    <nav class="foot-links">
+      <a href="./update.html">Update firmware</a>
+      <a href="./update.html#help">Help</a>
+      <a href="mailto:martin.descalzi@gmail.com">martin.descalzi@gmail.com</a>
+    </nav>
   </div>
 </footer>
-
-<!-- Vendored, not from a CDN: see vendor/esp-web-tools/README.md. Loading it
-     from unpkg meant the Install button did nothing without internet, which
-     includes anyone connected to the device's own access point. -->
 
 <script>
   // The release manifest is the single source of truth for what "latest"
@@ -245,6 +292,15 @@
     var version = document.getElementById("rel-version");
     var date = document.getElementById("rel-date");
 
+    // "2026-09-22" -> "22 September 2026". Built from parts rather than parsed:
+    // Date("2026-09-22") is midnight UTC, which is the 21st west of Greenwich.
+    function longDate(iso) {
+      var p = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || "");
+      if (!p) return iso || "";
+      return new Date(+p[1], +p[2] - 1, +p[3]).toLocaleDateString("en-GB",
+          { day: "numeric", month: "long", year: "numeric" });
+    }
+
     fetch("./firmware/latest/manifest.json", { cache: "no-store" })
       .then(function (response) {
         if (!response.ok) throw new Error(response.status);
@@ -254,16 +310,14 @@
         if (!manifest.version) throw new Error("no version");
         version.textContent = "v" + manifest.version;
         if (manifest.release_date) {
-          date.textContent = "released " + manifest.release_date;
+          date.textContent = "released " + longDate(manifest.release_date);
         }
       })
       .catch(function () {
         // No published release yet, or the fetch failed. Say so plainly rather
-        // than leaving "Checking..." on screen forever — the install button
-        // below would fail for the same reason, and an unexplained failure
-        // reads as a broken device rather than an unreleased one.
-        version.className = "v pending";
-        version.textContent = "No public release yet";
+        // than leaving a placeholder on screen forever.
+        version.className = "pending";
+        version.textContent = "not published yet";
       });
   })();
 </script>
