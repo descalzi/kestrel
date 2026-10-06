@@ -9,8 +9,19 @@
   --text:#eaf1f8; --dim:#8fa3b8; --soft:#c9dcee;
   --accent:#54a9ff; --accent-hover:#72b8ff; --accent-ink:#04121f;
   --warn:#e0a94a; --ok:#4cc072;
+  /* Outlines that carry meaning (control borders, the hollow "in development"
+     dot) need 3:1 against bg and panel; --line-2 managed 1.75:1, which made
+     secondary buttons barely read as buttons. */
+  --control-line:#5b6f86;
+  /* Comfortable reading measure. In em, not ch: ch is the width of "0", and
+     a 74ch cap rendered ~100 real characters a line. 36em lands near 70. */
+  --measure:36em;
   --radius:14px;
 }
+/* Browser-drawn surfaces carry the palette too. */
+html { accent-color:var(--accent); scrollbar-color:var(--line-2) var(--bg); }
+::selection { background:rgba(84,169,255,.35); color:#fff; }
+input, textarea { caret-color:var(--accent); }
 * { box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
@@ -48,11 +59,18 @@ code {
 .site-header nav a:hover, .site-header nav a[aria-current="page"] { color:var(--text); }
 .site-header nav .nav-cta {
   color:var(--text); background:rgba(84,169,255,.08);
-  border:1px solid var(--line-2); border-radius:999px; padding:.38rem .9rem;
+  border:1px solid var(--control-line); border-radius:999px; padding:.38rem .9rem;
 }
 .site-header nav .nav-cta:hover { border-color:var(--accent); }
-/* On a phone the brand links home and the one action that matters stays. */
-@media (max-width:640px) { .site-header nav a:not(.nav-cta) { display:none; } }
+/* On a phone the brand links home and Set up stays: the person holding a
+   phone is a pilot by an aircraft, and updating needs a desktop browser. */
+@media (max-width:640px) {
+  .site-header nav a:not(.m-keep) { display:none; }
+  .site-header nav .m-keep {
+    color:var(--text); background:rgba(84,169,255,.08);
+    border:1px solid var(--control-line); border-radius:999px; padding:.38rem .9rem;
+  }
+}
 
 /* ---------- buttons ---------- */
 /* border on every variant, transparent on the solid one: a <button> otherwise
@@ -66,31 +84,27 @@ code {
   transition:background-color .15s, border-color .15s;
 }
 .cta:hover { background:var(--accent-hover); }
-.cta.ghost { background:rgba(255,255,255,.05); color:var(--text); border-color:var(--line-2); }
+.cta.ghost { background:rgba(255,255,255,.05); color:var(--text); border-color:var(--control-line); }
 .cta.ghost:hover { background:rgba(84,169,255,.08); border-color:var(--accent); }
 .actions { display:flex; flex-wrap:wrap; gap:.7rem; }
 .btn {
-  background:var(--panel); color:var(--text); border:1px solid var(--line-2);
+  background:var(--panel); color:var(--text); border:1px solid var(--control-line);
   border-radius:8px; padding:.5rem .95rem; font:inherit; font-size:.9rem; cursor:pointer;
 }
 .btn:hover { border-color:var(--accent); }
 .btn:disabled { opacity:.5; cursor:not-allowed; }
 
 /* ---------- type ---------- */
-.eyebrow {
-  margin:0 0 .7rem; font-size:.76rem; font-weight:650;
-  letter-spacing:.13em; text-transform:uppercase; color:var(--accent);
-}
 /* balance: no single word stranded on a heading's last line. */
 h1, h2, h3 { text-wrap:balance; }
 h2.sec {
   font-size:clamp(1.75rem,3.4vw,2.35rem); line-height:1.15;
   margin:0 0 .7rem; letter-spacing:-.025em;
 }
-.lede { color:var(--dim); margin:0 0 2.6rem; max-width:60ch; font-size:1.05rem; }
-.note { font-size:.9rem; color:var(--dim); margin:1.4rem 0 0; }
+.lede { color:var(--dim); margin:0 0 2.6rem; max-width:var(--measure); font-size:1.05rem; }
+.note { font-size:.9rem; color:var(--dim); margin:1.4rem 0 0; max-width:var(--measure); }
 .badge {
-  display:inline-block; font-size:.65rem; letter-spacing:.07em; text-transform:uppercase;
+  display:inline-block; font-size:.72rem; letter-spacing:.07em; text-transform:uppercase;
   padding:.1rem .42rem; border-radius:4px; border:1px solid var(--warn);
   color:var(--warn); margin-left:.35rem; vertical-align:middle; font-weight:600;
 }
@@ -111,9 +125,7 @@ section { padding:5rem 0; border-bottom:1px solid var(--line); }
    transmitting, and this receiver never transmits. */
 .hero {
   position:relative; overflow:hidden;
-  background:
-    radial-gradient(120% 90% at 70% 35%, rgba(84,169,255,.10), transparent 62%),
-    linear-gradient(180deg,#0e151f 0%,#0a0e14 78%);
+  background:linear-gradient(180deg,#0e151f 0%,#0a0e14 78%);
   border-bottom:1px solid var(--line);
 }
 .hero .wrap {
@@ -131,7 +143,14 @@ section { padding:5rem 0; border-bottom:1px solid var(--line); }
   list-style:none; margin:2.2rem 0 0; padding:0;
   display:flex; flex-wrap:wrap; gap:.5rem 1.4rem; font-size:.9rem; color:var(--dim);
 }
-.facts li::before { content:"\2713"; color:var(--ok); font-weight:700; margin-right:.45rem; }
+.facts li { display:flex; align-items:center; gap:.45rem; }
+/* A drawn check, not a font glyph: the glyph changed shape and weight with
+   whichever system font happened to render it. */
+.facts li::before {
+  content:""; width:.95em; height:.95em; flex:none; background:var(--ok);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3.2L13 4.8' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3.2L13 4.8' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+}
 
 .hero-visual {
   flex:0 0 auto; position:relative;
@@ -167,18 +186,35 @@ section { padding:5rem 0; border-bottom:1px solid var(--line); }
     gap:.75rem; padding-top:2.6rem; padding-bottom:3.2rem;
   }
   .hero-lede { margin-left:auto; margin-right:auto; }
-  .hero .actions, .facts { justify-content:center; }
+  .hero .actions { justify-content:center; }
   .hero .actions .cta { flex:1 1 12rem; max-width:18rem; }
-  .hero-visual { width:min(64vw,270px); }
+  /* One fact per line: three centred items wrapped 1 + 2 and looked broken. */
+  .facts { flex-direction:column; align-items:center; gap:.35rem; }
+  /* Shorter bird, so the call to action lands above the fold on a phone. */
+  .hero-visual { width:min(52vw,210px); }
 }
 
 /* ---------- what it hears ---------- */
 /* Diagram and protocol list are two halves of one statement, so they sit
    side by side rather than the diagram floating above a detached list. */
 .hears { background:var(--panel); }
-.hears-split { display:grid; gap:2.4rem; grid-template-columns:1fr; align-items:start; }
+.hears-split {
+  display:grid; gap:2.4rem; grid-template-columns:1fr; align-items:start;
+  grid-template-areas:"fig" "list" "foot";
+}
+.hears-figure { grid-area:fig; }
+.proto { grid-area:list; }
+.hears .foot { grid-area:foot; }
+/* Desktop: the diagram is shorter than the list, so the closing note fills
+   the column under it instead of leaving a dead block beside the list. */
 @media (min-width:900px) {
-  .hears-split { grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:3.5rem; }
+  .hears-split {
+    grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:1.6rem 3.5rem;
+    grid-template-areas:"fig list" "foot list";
+    /* The list spans both rows; without this its extra height is shared out
+       and opens a gap between the diagram and the note. */
+    grid-template-rows:auto 1fr;
+  }
 }
 .hears-figure { margin:0; }
 .hears-figure img {
@@ -203,11 +239,11 @@ section { padding:5rem 0; border-bottom:1px solid var(--line); }
   box-shadow:0 0 0 3.5px rgba(76,192,114,.15);
 }
 .proto .heard .pip { background:var(--dim); box-shadow:none; }
-.proto .soon .pip { background:transparent; border:1.5px solid #4a5b6e; box-shadow:none; }
+.proto .soon .pip { background:transparent; border:1.5px solid #6a7f97; box-shadow:none; }
 .proto b { font-size:1rem; font-weight:650; }
 .proto .soon b { color:#b9c8d8; }
 .proto .desc { color:var(--dim); font-size:.9rem; line-height:1.55; }
-.hears .foot { color:var(--dim); font-size:.92rem; margin:2.8rem 0 0; max-width:74ch; }
+.hears .foot { color:var(--dim); font-size:.92rem; margin:0; max-width:var(--measure); }
 
 /* ---------- what you get ---------- */
 .grid { display:grid; gap:1.2rem; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); }
@@ -218,28 +254,40 @@ section { padding:5rem 0; border-bottom:1px solid var(--line); }
 .card p { margin:0; color:var(--dim); font-size:.95rem; }
 
 /* ---------- set up ---------- */
+/* A sequence with a rail joining the numbers, deliberately not another row of
+   boxed cards: "What you get" already is one, and two identical card rows
+   read as a template rather than as steps you take in order. */
 .setup {
   list-style:none; counter-reset:s; margin:0; padding:0;
-  display:grid; gap:1.2rem; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  display:grid; gap:2rem 2.4rem; grid-template-columns:repeat(4,minmax(0,1fr));
 }
-.setup li {
-  counter-increment:s; background:var(--panel);
-  border:1px solid var(--line); border-radius:var(--radius); padding:1.4rem 1.4rem 1.5rem;
-}
+.setup li { counter-increment:s; position:relative; padding-top:3.5rem; }
 .setup li::before {
-  content:counter(s); display:grid; place-items:center;
-  width:2.1rem; height:2.1rem; border-radius:50%; margin-bottom:.9rem;
-  background:rgba(84,169,255,.12); color:var(--accent); font-weight:700;
+  content:counter(s); position:absolute; top:0; left:0;
+  width:2.5rem; height:2.5rem; border-radius:50%; display:grid; place-items:center;
+  background:var(--accent); color:var(--accent-ink); font-weight:750; font-size:1.05rem;
 }
-.setup li > b { display:block; font-size:1.08rem; margin-bottom:.3rem; }
-.setup li > span { color:var(--dim); font-size:.95rem; }
+.setup li::after {
+  content:""; position:absolute; top:1.25rem; left:3.2rem; right:-1.7rem;
+  height:1px; background:var(--control-line);
+}
+.setup li:last-child::after { display:none; }
+/* The last step is the check, and it gets the "working" colour. */
+.setup li:last-child::before { background:var(--ok); }
+.setup li > b { display:block; font-size:1.1rem; margin-bottom:.35rem; }
+.setup li > span { color:var(--dim); font-size:.95rem; display:block; max-width:var(--measure); }
+@media (max-width:900px) {
+  .setup { grid-template-columns:1fr; gap:1.8rem; }
+  .setup li { padding:.25rem 0 0 3.6rem; }
+  .setup li::after { top:2.9rem; bottom:-1.6rem; left:1.25rem; right:auto; width:1px; height:auto; }
+}
 
 /* ---------- firmware band ---------- */
 .band { padding:3.2rem 0; background:linear-gradient(180deg,rgba(84,169,255,.06),transparent 80%); }
 .band .wrap { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1.5rem 2.5rem; }
-.band-title { margin:0; font-size:1.55rem; font-weight:700; letter-spacing:-.02em; }
-.band-title .d { font-size:.95rem; font-weight:400; color:var(--dim); margin-left:.5rem; letter-spacing:0; }
-.band-sub { margin:.3rem 0 0; color:var(--dim); }
+.band-title { margin:0; font-size:1.55rem; font-weight:700; letter-spacing:-.02em; line-height:1.3; }
+.band-title .d { font-size:.95rem; font-weight:400; color:var(--dim); margin-left:.5rem; letter-spacing:0; white-space:nowrap; display:inline-block; }
+.band-sub { margin:.3rem 0 0; color:var(--dim); max-width:var(--measure); }
 .pending { color:var(--dim); font-weight:400; font-size:1rem; letter-spacing:0; }
 
 /* ---------- specifications ---------- */
@@ -284,29 +332,54 @@ table.spec th { color:var(--dim); font-weight:600; width:14rem; }
   margin:1rem 0 0; padding:.85rem 1.1rem; border-radius:10px; font-size:.96rem;
   border:1px solid rgba(84,169,255,.4); background:rgba(84,169,255,.07);
 }
-.result[data-kind="ok"] { border-color:rgba(76,192,114,.55); background:rgba(76,192,114,.09); }
+.result[data-kind="ok"] {
+  border-color:rgba(76,192,114,.55); background:rgba(76,192,114,.09);
+  display:flex; align-items:center; gap:.8rem;
+}
+/* The kestrel turns up when the update is confirmed: the one moment on this
+   page an owner most wants reassurance, not decoration. */
+.result[data-kind="ok"]::before {
+  content:""; width:2.4rem; height:2.4rem; flex:none;
+  background:url("images/kestrel-mark.png") center/contain no-repeat;
+}
 .result[data-kind="warn"] { border-color:rgba(224,169,74,.6); background:rgba(224,169,74,.09); }
 .result[hidden] { display:none; }
 
-.steps { counter-reset:s; list-style:none; padding:0; margin:2rem 0 0; }
+.steps { counter-reset:s; list-style:none; padding:0; margin:0; }
 .steps > li { counter-increment:s; position:relative; padding-left:2.9rem; margin:0 0 1.2rem; }
 .steps > li::before {
   content:counter(s); position:absolute; left:0; top:0;
   width:1.95rem; height:1.95rem; border-radius:50%;
-  background:var(--bg); border:1px solid var(--line-2);
+  background:var(--bg); border:1px solid var(--control-line);
   display:flex; align-items:center; justify-content:center; font-size:.85rem; color:var(--accent);
 }
 .steps > li > b { display:block; margin-bottom:.1rem; }
-.steps > li > span { color:var(--dim); font-size:.95rem; }
+.steps > li > span { color:var(--dim); font-size:.95rem; display:block; max-width:var(--measure); }
+.steps .versions { margin-top:.9rem; }
 .steps esp-web-install-button { display:block; margin-top:.9rem; }
 .unsupported { color:var(--warn); display:block; margin-top:.4rem; font-size:.92rem; }
+/* Before the vendored module upgrades the element, every slotted child
+   renders at once -- including both "unsupported" messages. Hide those until
+   the element is defined and decides for itself. */
+esp-web-install-button:not(:defined) [slot="unsupported"],
+esp-web-install-button:not(:defined) [slot="not-allowed"] { display:none; }
+.caution {
+  margin:.9rem 0 0; padding:.75rem 1rem; max-width:var(--measure);
+  border:1px solid rgba(224,169,74,.45); border-radius:10px;
+  background:rgba(224,169,74,.07); color:var(--soft); font-size:.92rem;
+}
+.noserial {
+  margin:0 0 1.4rem; padding:.85rem 1.1rem; border-radius:10px; font-size:.96rem;
+  border:1px solid rgba(224,169,74,.6); background:rgba(224,169,74,.09);
+}
+.noserial[hidden] { display:none; }
 
 .releases { display:grid; gap:1rem; }
 .rel { background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.3rem 1.45rem; }
 .rel-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:.3rem .8rem; margin-bottom:.45rem; }
 .rel h3 { margin:0; font-size:1.2rem; letter-spacing:-.01em; }
 .rel .d { color:var(--dim); font-size:.88rem; }
-.rel ul { margin:0; padding-left:1.15rem; color:var(--dim); font-size:.95rem; }
+.rel ul { margin:0; padding-left:1.15rem; color:var(--dim); font-size:.95rem; max-width:var(--measure); }
 .rel li { margin:.35rem 0; }
 .rel li b { color:var(--text); font-weight:600; }
 
@@ -322,7 +395,11 @@ details.faq summary::after {
   color:var(--accent); font-size:1.35rem; font-weight:400;
 }
 details.faq[open] summary::after { content:"\2212"; }
-details.faq p { color:var(--dim); margin:0 0 1.1rem; max-width:70ch; }
+details.faq p { color:var(--dim); margin:0 0 1.1rem; max-width:var(--measure); }
+details.older summary {
+  cursor:pointer; color:var(--accent); font-weight:600; padding:.4rem 0;
+}
+details.older[open] summary { margin-bottom:1rem; }
 
 /* ---------- footer ---------- */
 .site-footer { padding:3rem 0 3.6rem; color:var(--dim); font-size:.9rem; }

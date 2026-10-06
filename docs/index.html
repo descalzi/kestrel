@@ -42,7 +42,7 @@
     </a>
     <nav>
       <a href="#hears">What it hears</a>
-      <a href="#setup">Set up</a>
+      <a href="#setup" class="m-keep">Set up</a>
       <a href="#specs">Specs</a>
       <a href="./update.html" class="nav-cta">Update firmware</a>
     </nav>
@@ -53,15 +53,13 @@
 <div class="hero">
   <div class="wrap">
     <div class="hero-copy">
-      <p class="eyebrow">Portable traffic receiver</p>
       <h1>See what's out there.</h1>
       <p class="hero-lede">
-        KestrelOne picks up the aircraft around you and puts them on the moving
-        map you already fly with.
+        KestrelOne is a portable traffic receiver. It picks up the aircraft
+        around you and puts them on the moving map you already fly with.
       </p>
       <div class="actions">
-        <a class="cta" href="#setup">Set up in 3 steps</a>
-        <a class="cta ghost" href="./update.html">Update firmware</a>
+        <a class="cta" href="#setup">Set up in 4 steps</a>
       </div>
       <ul class="facts">
         <li>SkyDemon &amp; ForeFlight</li>
@@ -78,7 +76,6 @@
 
 <section id="hears" class="hears">
   <div class="wrap">
-    <p class="eyebrow">What it hears</p>
     <h2 class="sec">Two receivers, listening at once.</h2>
     <p class="lede">
       1090&nbsp;MHz for transponders and ADS-B, and 868&nbsp;MHz for PilotAware
@@ -137,20 +134,19 @@
           </li>
         </ul>
       </div>
-    </div>
 
-    <p class="foot">
-      KestrelOne is a receiver, so it works alongside your transponder rather
-      than replacing it &mdash; that is still what makes you visible to others.
-      It shows what it can hear, which is never quite everything, so it belongs
-      beside a good lookout rather than instead of one.
-    </p>
+      <p class="foot">
+        KestrelOne is a receiver, so it works alongside your transponder rather
+        than replacing it &mdash; that is still what makes you visible to others.
+        It shows what it can hear, which is never quite everything, so it belongs
+        beside a good lookout rather than instead of one.
+      </p>
+    </div>
   </div>
 </section>
 
 <section id="features">
   <div class="wrap">
-    <p class="eyebrow">What you get</p>
     <h2 class="sec">Built for the cockpit you already have.</h2>
     <p class="lede">No installation, no wiring, no subscription.</p>
 
@@ -185,7 +181,7 @@
         <div class="body">
           <h3>Grab it and go</h3>
           <p>
-            Runs for 10 hours and more on its own battery, and charges over
+            Runs for 10+ hours on its own battery, and charges over
             USB-C. Nothing wired into the aircraft, nothing to certify, and it
             moves between aircraft as easily as your headset.
           </p>
@@ -197,43 +193,47 @@
 
 <section id="setup">
   <div class="wrap">
-    <p class="eyebrow">Set up</p>
-    <h2 class="sec">Flying in three steps.</h2>
+    <h2 class="sec">Flying in four steps.</h2>
     <p class="lede">Nothing to install on the tablet beyond the app you already use.</p>
 
+    <!-- Ends on a check, not on "start flying": the moment that matters before
+         departure is knowing it works, and the device page answers that in
+         one line. -->
     <ol class="setup">
       <li>
         <b>Switch it on</b>
-        <span>Charge it over USB-C and switch it on. A view of the sky helps it
+        <span>Charge it over USB-C, then turn it on with the switch on its side.
+        All three lights flash briefly as it starts. A view of the sky helps it
         find your position.</span>
       </li>
       <li>
         <b>Join its WiFi</b>
         <span>On your tablet, join the <code>KestrelOne</code> network. The
-        password is <code>kestrelone</code>.</span>
+        password is <code>kestrelone</code>. The tablet may warn that this
+        network has no internet: that is expected, so stay connected to it.</span>
       </li>
       <li>
-        <b>Start flying</b>
+        <b>Start your app</b>
         <span>In SkyDemon, choose <b>GDL90 Compatible Device</b> when you start
         Flying mode. Other GDL90 apps listen on UDP port 4000; look in their
         external-device settings.</span>
       </li>
+      <li>
+        <b>Check it's working</b>
+        <span>Open <a href="http://192.168.4.1/">192.168.4.1</a> on the tablet.
+        The line at the top should read <b>All good</b>. If it says anything
+        else, it tells you what to do.</span>
+      </li>
     </ol>
-    <p class="note">
-      While you are on its network, the device's own page is at
-      <a href="http://192.168.4.1/">192.168.4.1</a>: live traffic, signal
-      quality, battery and settings.
-    </p>
   </div>
 </section>
 
 <section id="firmware" class="band">
   <div class="wrap">
     <div>
-      <p class="eyebrow">Firmware</p>
-      <p class="band-title">
-        Latest <span id="rel-version">&hellip;</span><span class="d" id="rel-date"></span>
-      </p>
+      <h2 class="band-title">
+        Firmware <span id="rel-version">&hellip;</span><span class="d" id="rel-date"></span>
+      </h2>
       <p class="band-sub">Updates install from your browser over USB and keep your settings.</p>
     </div>
     <div class="actions">
@@ -254,7 +254,7 @@
       <tr><th>Altitude</th><td>Barometric pressure altitude, 25&nbsp;ft resolution</td></tr>
       <tr><th>Output</th><td>GDL90 over WiFi (UDP&nbsp;4000) &mdash; ownship, traffic and heartbeat. Works with SkyDemon and ForeFlight.</td></tr>
       <tr><th>Network</th><td>Hosts its own access point (<code>KestrelOne</code>, password <code>kestrelone</code>), or joins an existing network</td></tr>
-      <tr><th>Power</th><td>Internal lithium cell, 10+ hours under load in testing. USB-C charging, battery gauge.</td></tr>
+      <tr><th>Power</th><td>Internal lithium cell, 10+ hours tested under load. USB-C charging, battery gauge.</td></tr>
       <tr><th>Interface</th><td>Built-in web page for traffic, signal quality and settings (192.168.4.1 on its own network)</td></tr>
       <tr><th>Updates</th><td>From this site, in the browser, over USB</td></tr>
     </table>
@@ -303,6 +303,7 @@
 
     fetch("./firmware/latest/manifest.json", { cache: "no-store" })
       .then(function (response) {
+        if (response.status === 404) throw new Error("none");
         if (!response.ok) throw new Error(response.status);
         return response.json();
       })
@@ -313,11 +314,12 @@
           date.textContent = "released " + longDate(manifest.release_date);
         }
       })
-      .catch(function () {
-        // No published release yet, or the fetch failed. Say so plainly rather
-        // than leaving a placeholder on screen forever.
+      .catch(function (err) {
+        // A 404 means nothing has been published; anything else is a failed
+        // lookup, which must not be presented as a fact about the releases.
         version.className = "pending";
-        version.textContent = "not published yet";
+        version.textContent = (err && err.message === "none")
+            ? "not published yet" : "(couldn't check the latest version, reload to try again)";
       });
   })();
 </script>

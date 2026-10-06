@@ -35,7 +35,7 @@
     </a>
     <nav>
       <a href="./#hears">What it hears</a>
-      <a href="./#setup">Set up</a>
+      <a href="./#setup" class="m-keep">Set up</a>
       <a href="./#specs">Specs</a>
       <a href="./update.html" class="nav-cta" aria-current="page">Update firmware</a>
     </nav>
@@ -45,7 +45,6 @@
 <main>
 <section class="page-head">
   <div class="wrap">
-    <p class="eyebrow">Firmware</p>
     <h1 class="page-title">Update your KestrelOne</h1>
     <p class="lede">
       Updates install straight from this page over USB. Nothing to download and
@@ -54,21 +53,13 @@
     </p>
 
     <div class="install">
-      <div class="versions">
-        <div class="ver">
-          <span class="k">Latest release</span>
-          <span class="v" id="rel-version">Checking&hellip;</span>
-          <span class="d" id="rel-date"></span>
-          <a class="more" href="#whats-new">What's new</a>
-        </div>
-        <div class="ver">
-          <span class="k">Your device</span>
-          <span class="v pending" id="dev-version">Not checked yet</span>
-          <span class="d" id="dev-serial"></span>
-          <button class="btn" id="btn-read" type="button">Check my device</button>
-        </div>
-      </div>
-      <p class="result" id="result" role="status" aria-live="polite" hidden></p>
+      <!-- Shown by script when the browser has no Web Serial. Visible text,
+           not a greyed-out button with its reason hidden in a tooltip. -->
+      <p class="noserial" id="noSerial" hidden>
+        Updating needs <b>Chrome or Edge on a desktop or laptop computer</b>.
+        This browser cannot talk to USB devices; Safari, Firefox, phones and
+        tablets cannot update KestrelOne.
+      </p>
 
       <ol class="steps">
         <li>
@@ -78,8 +69,28 @@
           will not see it.</span>
         </li>
         <li>
+          <b>Check what it runs</b>
+          <span>Optional: compare your device with the latest release.</span>
+          <div class="versions">
+            <div class="ver">
+              <span class="k">Latest release</span>
+              <span class="v" id="rel-version">Checking&hellip;</span>
+              <span class="d" id="rel-date"></span>
+              <a class="more" href="#whats-new">What's new</a>
+            </div>
+            <div class="ver">
+              <span class="k">Your device</span>
+              <span class="v pending" id="dev-version">Not checked yet</span>
+              <span class="d" id="dev-serial"></span>
+              <button class="btn" id="btn-read" type="button">Check my device</button>
+            </div>
+          </div>
+          <p class="result" id="result" role="status" aria-live="polite" hidden></p>
+        </li>
+        <li>
           <b>Update</b>
-          <span>Press the button and choose the KestrelOne serial port.</span>
+          <span>Press the button and choose the KestrelOne port. Your browser
+          usually lists it as <b>USB JTAG/serial debug unit</b>.</span>
           <esp-web-install-button manifest="./firmware/latest/manifest.json">
             <button slot="activate" class="cta" type="button">Update over USB</button>
             <span slot="unsupported" class="unsupported">
@@ -90,12 +101,14 @@
               Serial access was blocked. This page must be opened over HTTPS.
             </span>
           </esp-web-install-button>
-        </li>
-        <li>
-          <b>Confirm</b>
-          <span>When the device restarts, this page reads it back and shows the
-          result above. That proves the new firmware booted, not just that it
-          was written.</span>
+          <!-- At the button, not after the steps: the installer asks about
+               Erase before anyone has scrolled down to read a note. -->
+          <p class="caution">
+            If the installer offers <b>Erase device</b>, leave it unticked: it
+            wipes your settings and WiFi names. The update takes a minute or so;
+            keep KestrelOne plugged in until it says it is done. When it
+            restarts, this page reads it back and shows the result in step 2.
+          </p>
         </li>
         <li>
           <b>Reconnect</b>
@@ -105,9 +118,8 @@
       </ol>
 
       <p class="note">
-        Ticking <b>Erase device</b> in the installer wipes your settings and
-        returns it to factory defaults. Nothing is uploaded or stored: the check
-        only reads the device's own startup message over USB.
+        Nothing is uploaded or stored: the check only reads the device's own
+        startup message over USB.
       </p>
     </div>
   </div>
@@ -118,7 +130,6 @@
      release published before its notes are written simply shows no badge. -->
 <section id="whats-new">
   <div class="wrap">
-    <p class="eyebrow">Release notes</p>
     <h2 class="sec">What's new</h2>
 
     <div class="releases">
@@ -156,6 +167,9 @@
         </ul>
       </article>
 
+      <details class="older">
+        <summary>Older releases</summary>
+        <div class="releases">
       <article class="rel" data-version="0.5.1">
         <div class="rel-head"><h3>0.5.1</h3><span class="d">24 August 2026</span></div>
         <ul>
@@ -179,13 +193,14 @@
           <li>Reliability work throughout the 1090&nbsp;MHz receiver.</li>
         </ul>
       </article>
+        </div>
+      </details>
     </div>
   </div>
 </section>
 
 <section id="help">
   <div class="wrap">
-    <p class="eyebrow">Help</p>
     <h2 class="sec">If something goes wrong</h2>
 
     <details class="faq">
@@ -213,8 +228,9 @@
         Rejoin the <code>KestrelOne</code> WiFi network from your tablet &mdash;
         phones and tablets usually drop back to a remembered network while the
         device restarts. Then open its own page at
-        <a href="http://192.168.4.1/">192.168.4.1</a> and check under
-        <b>Status</b> that it is receiving.
+        <a href="http://192.168.4.1/">192.168.4.1</a>: the line at the top of
+        the <b>Traffic</b> tab says whether it is receiving and whether your
+        tablet is connected.
       </p>
     </details>
 
@@ -223,7 +239,8 @@
       <p>
         Plug it in and press <b>Check my device</b> above. If that cannot read
         it, join its WiFi and open <a href="http://192.168.4.1/">192.168.4.1</a>:
-        the version is shown on the <b>Status</b> tab.
+        the version is under <b>Settings &rarr; Firmware</b>, and at the bottom
+        of the first tab (called <b>Status</b> on firmware before 0.7.0).
       </p>
     </details>
 
@@ -292,34 +309,50 @@
   // disagree. no-store because Pages will serve a cached manifest for minutes
   // after a release, which is exactly when someone is looking at it.
   fetch("./firmware/latest/manifest.json", { cache: "no-store" })
-    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (r) {
+      if (r.status === 404) throw new Error("none");
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    })
     .then(function (m) {
       if (!m.version) throw new Error("no version");
       latestVersion = m.version;
       relVersion.textContent = "v" + m.version;
       if (m.release_date) relDate.textContent = "released " + longDate(m.release_date);
 
-      var head = document.querySelector('.rel[data-version="' + m.version + '"] .rel-head');
-      if (head) {
+      // Badge every release against what the installer will actually flash.
+      // Notes are written before a release is published, so for a few minutes
+      // around each release the newest notes describe firmware the button
+      // cannot install yet -- say so, rather than letting them read as current.
+      document.querySelectorAll(".rel[data-version]").forEach(function (rel) {
+        var cmp = compareVersions(rel.getAttribute("data-version"), m.version);
+        if (cmp === null || cmp < 0) return;
         var badge = document.createElement("span");
-        badge.className = "badge ok";
-        badge.textContent = "Latest";
-        head.appendChild(badge);
-      }
+        badge.className = cmp === 0 ? "badge ok" : "badge";
+        badge.textContent = cmp === 0 ? "Latest" : "Coming soon, not in the installer yet";
+        rel.querySelector(".rel-head").appendChild(badge);
+      });
     })
-    .catch(function () {
+    .catch(function (err) {
+      // Only a 404 means nothing is published. Anything else is a failed
+      // lookup, and must not be presented as a fact about the releases.
       relVersion.className = "v pending";
-      relVersion.textContent = "No public release yet";
+      relVersion.textContent = (err && err.message === "none")
+          ? "No public release yet" : "Couldn't check. Reload to try again.";
     });
 
   // ---- saying what happened ------------------------------------------------
   //
   // One panel for every outcome, directly under the two versions it compares.
   // kind is "ok", "warn" or "info"; the colour follows it.
-  function show(kind, text) {
+  function show(kind, text, reveal) {
     result.hidden = !text;
     result.setAttribute("data-kind", kind || "info");
     result.textContent = text || "";
+    // After the installer dialog closes, the panel can be off screen.
+    if (reveal && text && result.scrollIntoView) {
+      result.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
   }
 
   // ---- reading the device back --------------------------------------------
@@ -334,6 +367,11 @@
   // Nothing here is stored or uploaded. It is confirmation, not tracking.
   var RE_SERIAL = /Serial\s*:\s*([0-9A-Fa-f]{2}(?::[0-9A-Fa-f]{2}){5})/;
   var RE_FW = /Firmware\s*:\s*(\S+)/;
+  var RE_UNIT = /Unit\s*:\s*([0-9a-f]{32})/;
+  var RE_BOARD = /Board\s*:\s*(KestrelOne v\d+)/;
+
+  // Fleet register (kestrel-one tools/fleet-register). Empty = nothing sent.
+  var FLEET_URL = "";
 
   function supported() {
     return typeof navigator !== "undefined" && !!navigator.serial;
@@ -342,14 +380,17 @@
   function parse(text) {
     var s1 = RE_SERIAL.exec(text);
     var f = RE_FW.exec(text);
-    return { serial: s1 ? s1[1].toUpperCase() : null, fw: f ? f[1] : null };
+    var u = RE_UNIT.exec(text);
+    var b = RE_BOARD.exec(text);
+    return { serial: s1 ? s1[1].toUpperCase() : null, fw: f ? f[1] : null,
+             unit: u ? u[1] : null, board: b ? b[1] : null };
   }
 
   // The device prints its banner about a second after reset. This gives up
   // rather than hanging: a board that never prints is a result too.
   function readBanner(port, timeoutMs) {
     return new Promise(function (resolve) {
-      var text = "", reader = null, done = false;
+      var text = "", reader = null, done = false, graceTimer = null;
 
       function finish(result) {
         if (done) return;
@@ -368,7 +409,13 @@
             if (r.done) { finish(parse(text)); return; }
             text += decoder.decode(r.value, { stream: true });
             var hit = parse(text);
-            if (hit.serial) { finish(hit); return; }
+            // The unit ID is printed on the line after the serial, and older
+            // firmware does not print one at all. So on finding the serial,
+            // wait a moment for the next line rather than stopping dead.
+            if (hit.serial && !graceTimer) {
+              graceTimer = setTimeout(function () { finish(parse(text)); }, 400);
+            }
+            if (hit.serial && hit.unit) { finish(hit); return; }
             pump();
           }).catch(function () { finish(parse(text)); });
         })();
@@ -391,8 +438,25 @@
     return 0;
   }
 
+  // Anonymous fleet count: unit ID (random, not the serial), firmware and
+  // board revision -- nothing else. text/plain + no-cors keeps it a "simple"
+  // request, which the Apps Script endpoint accepts without a preflight; the
+  // response is opaque and deliberately ignored, because a count failing must
+  // never look like the update failing.
+  function sendFleet(info) {
+    if (!FLEET_URL || !info.unit || !info.fw) return;
+    try {
+      fetch(FLEET_URL, {
+        method: "POST", mode: "no-cors",
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify({ unit: info.unit, version: info.fw, board: info.board || "" })
+      }).catch(function () {});
+    } catch (e) { /* never let counting break the page */ }
+  }
+
   function report(info, context) {
     if (!info.serial) return false;
+    sendFleet(info);
     devSerial.textContent = "Serial " + info.serial;
     if (!info.fw) {
       show("info", "Found device " + info.serial + ", but it did not report its version.");
@@ -408,12 +472,13 @@
     } else if (context === "updated") {
       if (cmp === 0) {
         show("ok", "Update confirmed: your device restarted and is running v" + latestVersion +
-             ". Rejoin the KestrelOne WiFi on your tablet.");
+             ". Rejoin the KestrelOne WiFi on your tablet.", true);
       } else {
         // Worth saying rather than hiding: a version that does not match the
         // release means the update did not take, however green the bar looked.
         show("warn", "Your device restarted, but it is running " + info.fw + ", not v" +
-             latestVersion + ". Try the update again.");
+             latestVersion + ". Run the update again; if it happens twice, email " +
+             "martin.descalzi@gmail.com.", true);
       }
     } else if (cmp === 0) {
       show("ok", "Up to date: your device is running the latest release.");
@@ -445,14 +510,14 @@
         }
         show("warn", "Could not read the device. Unplug it, plug it back in, then press " +
              "Check my device. Its own page at 192.168.4.1 also shows the version, " +
-             "on the Status tab.");
+             "under Settings \u2192 Firmware.", context === "updated");
       });
     });
   }
 
   if (!supported()) {
     btnRead.disabled = true;
-    btnRead.title = "Needs Chrome or Edge on a desktop computer";
+    document.getElementById("noSerial").hidden = false;
   }
 
   btnRead.addEventListener("click", function () {
@@ -468,12 +533,15 @@
     installer.addEventListener("state-changed", function (ev) {
       var st = ev.detail && ev.detail.state;
       if (st === "finished") {
-        show("info", "Update finished — checking the device restarted…");
-        setTimeout(function () { identify("updated", 3); }, 2500);
+        show("info", "Update finished — checking the device restarted…", true);
+        // The installer can hold the port for a while after "finished". Eight
+        // tries 2 s apart (~16 s) so a slow release never reads as a failure
+        // straight after a successful update.
+        setTimeout(function () { identify("updated", 8); }, 2500);
       } else if (st === "error") {
         show("warn", "The update did not complete. Unplug the device, plug it back in " +
              "and try again — it keeps its previous firmware until a new one " +
-             "is written in full.");
+             "is written in full.", true);
       }
     });
   }
