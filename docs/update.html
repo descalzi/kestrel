@@ -118,8 +118,9 @@
       </ol>
 
       <p class="note">
-        Nothing is uploaded or stored: the check only reads the device's own
-        startup message over USB.
+        Nothing that identifies you or your device is uploaded. When the page
+        reads a device, it sends an anonymous unit ID, the firmware version and
+        the board revision, so we can count how many units are up to date.
       </p>
     </div>
   </div>
@@ -371,7 +372,7 @@
   var RE_BOARD = /Board\s*:\s*(KestrelOne v\d+)/;
 
   // Fleet register (kestrel-one tools/fleet-register). Empty = nothing sent.
-  var FLEET_URL = "";
+  var FLEET_URL = "https://script.google.com/macros/s/AKfycby_Uprs_eAjlb5JnzgSCaGMa-purZtaY98xXqvuXIvo7sAiqdiXpq1fOnbM8UB3qmVXvg/exec";
 
   function supported() {
     return typeof navigator !== "undefined" && !!navigator.serial;
