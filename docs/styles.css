@@ -345,6 +345,10 @@ table.spec th { color:var(--dim); font-weight:600; width:14rem; }
 .result[data-kind="warn"] { border-color:rgba(224,169,74,.6); background:rgba(224,169,74,.09); }
 .result[hidden] { display:none; }
 
+/* The update page offers two ways; each gets a plain heading above its card. */
+.way-title { font-size:1.2rem; letter-spacing:-.01em; margin:2.2rem 0 .8rem; }
+.way-sub { color:var(--dim); margin:-.4rem 0 .9rem; max-width:var(--measure); }
+.install.way { margin-bottom:.4rem; }
 .steps { counter-reset:s; list-style:none; padding:0; margin:0; }
 .steps > li { counter-increment:s; position:relative; padding-left:2.9rem; margin:0 0 1.2rem; }
 .steps > li::before {
@@ -396,10 +400,6 @@ details.faq summary::after {
 }
 details.faq[open] summary::after { content:"\2212"; }
 details.faq p { color:var(--dim); margin:0 0 1.1rem; max-width:var(--measure); }
-details.older summary {
-  cursor:pointer; color:var(--accent); font-weight:600; padding:.4rem 0;
-}
-details.older[open] summary { margin-bottom:1rem; }
 
 /* ---------- footer ---------- */
 .site-footer { padding:3rem 0 3.6rem; color:var(--dim); font-size:.9rem; }
