@@ -1,8 +1,14 @@
 {
   "name": "KestrelOne",
-  "version": "0.7.0",
-  "release_date": "2026-10-04",
+  "version": "0.7.1",
+  "release_date": "2026-10-14",
   "new_install_prompt_erase": true,
+  "ota": {
+    "path": "0.7.1/firmware.bin",
+    "version": "0.7.1",
+    "size": 1293536,
+    "sha256": "66a4e65142dbb37e7fa5d5fb4a7e71b47abb029d382c56cf5882d9f25064f266"
+  },
   "builds": [
     {
       "chipFamily": "ESP32-S3",
