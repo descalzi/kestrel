@@ -1,0 +1,35 @@
+{
+  "name": "KestrelOne",
+  "version": "0.7.3",
+  "release_date": "2026-10-18",
+  "new_install_prompt_erase": true,
+  "ota": {
+    "path": "0.7.3/firmware.bin",
+    "version": "0.7.3",
+    "size": 1293872,
+    "sha256": "ca4dcc6ba4bc5fa29e547cdf1c4a63ffe2fd72913c6a9b15d4308a38c62ef94d"
+  },
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0
+        },
+        {
+          "path": "partitions.bin",
+          "offset": 32768
+        },
+        {
+          "path": "boot_app0.bin",
+          "offset": 57344
+        },
+        {
+          "path": "firmware.bin",
+          "offset": 65536
+        }
+      ]
+    }
+  ]
+}
